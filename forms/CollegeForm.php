@@ -1,11 +1,17 @@
 <?php
 namespace app\forms;
 use yii\base\Model;
+use app\daos\College;
 /**
  * 大学对应的Form表单
  * @author xiawei
  */
 class CollegeForm extends Model {
+	/**
+	 * 大学对应的id
+	 * @var integer
+	 */
+	public $id = 0;
 	/**
 	 * 大学名称
 	 * @var string
@@ -41,6 +47,20 @@ class CollegeForm extends Model {
 	 * @see \yii\base\Model::rules()
 	 */
 	public function rules() {
-		return [];
+		return [
+			['name', 'checkName', 'on' => ['add'], 'skipOnEmpty' => false],
+			['detail_address', 'required', 'on' => ['add'], 'message' => '详细地址必须填写']
+		];
+	}
+	
+	/**
+	 * 检查名字
+	 */
+	public function checkName() {
+		if (empty($this->name)) {
+			$this->addError('name', '名字不能为空');
+		} elseif (College::instance()->existsByColumn('name', $this->name)) {
+			$this->addError('name', '该大学已经被添加过');
+		}
 	}
 }

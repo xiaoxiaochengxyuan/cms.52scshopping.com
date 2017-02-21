@@ -3,6 +3,7 @@ namespace app\base;
 use yii\db\Query;
 use yii\db\Connection;
 use phpDocumentor\Reflection\Types\String_;
+use yii\data\Pagination;
 
 /**
  * 所有Dao的基类
@@ -214,5 +215,41 @@ abstract class BaseDao {
 	 */
 	public function colomnByColumn(string $columnName, string $columnValue, $select) : array {
 		return $this->createQuery()->select($select)->from($this->tableName())->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])->column(self::db());
+	}
+	
+	/**
+	 * 通过列名和列值来判断对应值是否存在
+	 * @param string $columnName 对应的列名
+	 * @param string $columnValue 对应的列值
+	 * @return boolean true表示成功,false表示失败
+	 */
+	public function existsByColumn(string $columnName, string $columnValue) : bool {
+		return $this->createQuery()->from($this->tableName())->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])->exists(self::db());
+	}
+	
+	
+	/**
+	 * 分页获取数据
+	 * @param Pagination $pagination 对应分页
+	 * @param string $select 要查询的数据
+	 * @return array
+	 */
+	public function listByPage(Pagination $pagination, $select = '*') : array{
+		return $this->createQuery()
+			->select($select)
+			->from($this->tableName())
+			->offset($pagination->getOffset())
+			->limit($pagination->getLimit())
+			->all(self::db());
+	}
+	
+	/**
+	 * 获取总数
+	 * @return int
+	 */
+	public function count() : int {
+		return $this->createQuery()
+			->from($this->tableName())
+			->count('*', self::db());
 	}
 }

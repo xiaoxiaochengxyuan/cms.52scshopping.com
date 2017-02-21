@@ -1,3 +1,6 @@
+<?php
+use yii\widgets\LinkPager;
+?>
 <div class="breadcrumbs" id="breadcrumbs">
 	<script type="text/javascript">
 		try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
@@ -26,6 +29,29 @@
 
 	<div class="row">
 		<div class="col-xs-12">
+			<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>名称</th>
+						<th>地址</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($colleges as $college):?>
+						<tr>
+							<td><?=$college['id']?></td>
+							<td><?=$college['name']?></td>
+							<td><?=$college['province_name']?>、<?=$college['city_name']?>、<?=$college['region_name']?>、<?=$college['detail_address']?></td>
+							<td>
+								<a href="<?=Yii::$app->urlManager->createUrl(['/college/update', 'id' => $college['id']])?>" class="btn btn-xs btn-info">修改</a>
+							</td>
+						</tr>
+					<?php endforeach;?>
+				</tbody>
+			</table>
+			<center><?=LinkPager::widget(['pagination' => $pagination,]);?></center>
 		</div>
 	</div>
 </div>

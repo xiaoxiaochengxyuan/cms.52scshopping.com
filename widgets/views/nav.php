@@ -24,7 +24,7 @@ function activeLi(string $controllerId, string $actionId = null) : string{
 			<span class="menu-text"> 欢迎页面 </span>
 		</a>
 	</li>
-	<?php if (CmsAdmin::hasPremiss($currentControllerId, $currentActionId)):?>
+	<?php if (CmsAdmin::hasPremiss('college', 'index')):?>
 		<li <?=activeLi('college')?>>
 			<a href="<?=Yii::$app->urlManager->createUrl('/college')?>">
 				<i class="icon-bookmark"></i>
