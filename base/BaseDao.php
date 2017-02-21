@@ -2,6 +2,7 @@
 namespace app\base;
 use yii\db\Query;
 use yii\db\Connection;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * 所有Dao的基类
@@ -157,7 +158,7 @@ abstract class BaseDao {
 			->select($select)
 			->from($this->tableName())
 			->where("{$this->primaryKey()}=:id", [':id' => $id])
-			->one();
+			->one(self::db());
 	}
 	
 	
@@ -168,11 +169,50 @@ abstract class BaseDao {
 	 * @param string $select 要查询的字段
 	 * @return array
 	 */
-	public function getByColumn(string $columnName, string $columnValue, $select = '*') : array {
+	public function getByColumn(string $columnName, string $columnValue, $select = '*') {
 		return $this->createQuery()
 			->select($select)
 			->from($this->tableName())
 			->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])
-			->one();
+			->one(self::db());
+	}
+	
+	/**
+	 * 删除表中所有的数据,慎用
+	 * @return int 影响的行数
+	 */
+	public function deleteAll() : int {
+		return self::db()->createCommand()->delete($this->tableName())->execute();
+	}
+	
+	/**
+	 * 获取所有数据
+	 * @param string $select 要查询的数据列
+	 * @return array 返回的数据
+	 */
+	public function listAll($select = '*') : array {
+		return $this->createQuery()->select($select)->from($this->tableName())->all(self::db());
+	}
+	
+	/**
+	 * 通过某一列获取对应的数据
+	 * @param string $columnName 对应的列名
+	 * @param string $columnValue 对应的值
+	 * @param unknown $select 要查询的数据
+	 * @return array
+	 */
+	public function listByColumn(string $columnName, string $columnValue, $select = '*') : array {
+		return $this->createQuery()->select($select)->from($this->tableName())->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])->all(self::db());
+	}
+	
+	/**
+	 * 通过某一列获取对应的数据
+	 * @param string $columnName 对应的列名
+	 * @param string $columnValue 对应的值
+	 * @param unknow $select 要查询的列
+	 * @return array
+	 */
+	public function colomnByColumn(string $columnName, string $columnValue, $select) : array {
+		return $this->createQuery()->select($select)->from($this->tableName())->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])->column(self::db());
 	}
 }

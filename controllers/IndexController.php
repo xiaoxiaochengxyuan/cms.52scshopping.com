@@ -1,13 +1,16 @@
 <?php
 namespace app\controllers;
 use app\base\BaseWebController;
-use app\daos\CmsAdmin;
 /**
  * 所有Controller的基类
  * @author xiawei
  */
 class IndexController extends BaseWebController {
+	/**
+	 * 首页控制器
+	 * @return string
+	 */
 	public function actionIndex() {
-		var_dump(CmsAdmin::instance()->columns());exit();
+		return $this->render('index');
 	}
 }
