@@ -108,7 +108,7 @@ abstract class BaseDao {
 	 * @param array $data
 	 * @return int 影响的行数
 	 */
-	public function insert(array $data) : int {
+	public function insert(array $data) {
 		if (isset($data[$this->primaryKey()])) {
 			unset($data[$this->primaryKey()]);
 		}
@@ -128,7 +128,7 @@ abstract class BaseDao {
 	 * @param array $data 要修改的数据
 	 * @return int
 	 */
-	public function update(int $id, array $data) : int {
+	public function update(int $id, array $data) {
 		if (isset($data[$this->primaryKey()])) {
 			unset($data[$this->primaryKey()]);
 		}
@@ -144,7 +144,7 @@ abstract class BaseDao {
 	 * @param int $id 要删除的数据的Id
 	 * @return int 影响的行数
 	 */
-	public function delete(int $id) : int {
+	public function delete(int $id) {
 		return self::db()->createCommand()->delete($this->tableName(), "{$this->primaryKey()}=:id", [':id' => $id])->execute();
 	}
 	
@@ -182,7 +182,7 @@ abstract class BaseDao {
 	 * 删除表中所有的数据,慎用
 	 * @return int 影响的行数
 	 */
-	public function deleteAll() : int {
+	public function deleteAll() {
 		return self::db()->createCommand()->delete($this->tableName())->execute();
 	}
 	
@@ -251,5 +251,60 @@ abstract class BaseDao {
 		return $this->createQuery()
 			->from($this->tableName())
 			->count('*', self::db());
+	}
+	
+	/**
+	 * 通过对应的列分页获取数据
+	 * @param Pagination $pagination 分页组件
+	 * @param string $columnName 对应的列名称
+	 * @param string $columnValue 对应的列值
+	 * @param string $select 要查询的字段
+	 * @return array 返回的数据
+	 */
+	public function pageByColumn(Pagination $pagination, string $columnName, string $columnValue, $select = '*') : array {
+		return $this->createQuery()
+			->select($select)
+			->from($this->tableName())
+			->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])
+			->offset($pagination->getOffset())
+			->limit($pagination->getLimit())
+			->all(self::db());
+	}
+	
+	/**
+	 * 获取总数
+	 * @param string $columnName 对应的列名
+	 * @param string $columnValue 对应的列值
+	 * @return int
+	 */
+	public function countByColumn(string $columnName, string $columnValue) : int {
+		return $this->createQuery()
+			->from($this->tableName())
+			->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])
+			->count('*', self::db());
+	}
+	
+	/**
+	 * 通过条件列判断主键不是$id的数据是否存在
+	 * @param string $columnName 对应列名
+	 * @param string $columnValue 对应列值
+	 * @param int $id 对应的主键
+	 * @return bool 存在返回true,否则返回FALSE
+	 */
+	public function existsColumnWithoutPrimarykey(string $columnName, string $columnValue, int $id) : bool {
+		return $this->createQuery()
+			->from($this->tableName())
+			->where("{$columnName}=:{$columnName} and {$this->primaryKey()}<>:{$this->primaryKey()}", [":{$columnName}" => $columnValue, ":{$this->primaryKey()}" => $id])
+			->exists(self::db());
+	}
+	
+	/**
+	 * 通过条件列删除数据
+	 * @param string $columnName
+	 * @param string $columnValue
+	 * @return number
+	 */
+	public function deleteByColumn(string $columnName, string $columnValue) {
+		return self::db()->createCommand()->delete($this->tableName(), "{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])->execute();
 	}
 }

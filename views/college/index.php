@@ -23,7 +23,7 @@ use yii\widgets\LinkPager;
 				<i class="icon-double-angle-right"></i>
 				列表页面
 			</small>
-			<a href="<?=Yii::$app->urlManager->createUrl('/college/add')?>" class="btn btn-xs btn-pink" style="float: right;">添加</a>
+			<a href="<?=Yii::$app->urlManager->createUrl(['/college/add'])?>" class="btn btn-xs btn-pink" style="float: right;">添加</a>
 		</h1>
 	</div><!-- /.page-header -->
 
@@ -45,7 +45,8 @@ use yii\widgets\LinkPager;
 							<td><?=$college['name']?></td>
 							<td><?=$college['province_name']?>、<?=$college['city_name']?>、<?=$college['region_name']?>、<?=$college['detail_address']?></td>
 							<td>
-								<a href="<?=Yii::$app->urlManager->createUrl(['/college/update', 'id' => $college['id']])?>" class="btn btn-xs btn-info">修改</a>
+								<a href="<?=Yii::$app->urlManager->createUrl(['/college/update', 'id' => $college['id']])?>" class="btn btn-xs btn-info">修改</a>&nbsp;&nbsp;
+								<a href="<?=Yii::$app->urlManager->createUrl(['/college-admin/index', 'college_id' => $college['id']])?>" class="btn btn-xs btn-success">管理员列表</a>
 							</td>
 						</tr>
 					<?php endforeach;?>

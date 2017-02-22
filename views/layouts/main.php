@@ -13,6 +13,7 @@ $actionId = $this->context->action->id;
 		<!-- basic styles -->
 		<link href="<?=ACE_STATIC_CSS_URL?>/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="<?=ACE_STATIC_CSS_URL?>/font-awesome.min.css" />
+		<link rel="stylesheet" href="<?=CMS_STATIC_CSS_URL?>/style.css" />
 		
 		<!--[if IE 7]>
 			<link rel="stylesheet" href="<?=ACE_STATIC_CSS_URL?>/font-awesome-ie7.min.css" />

@@ -43,6 +43,8 @@ abstract class BaseWebController extends Controller {
 		defined('ACE_STATIC_JS_URL') or define('ACE_STATIC_JS_URL', ACE_STATIC_URL.'/js');
 		defined('ACE_STATIC_CSS_URL') or define('ACE_STATIC_CSS_URL', ACE_STATIC_URL.'/css');
 		defined('ACE_STATIC_AVATOR_URL') or define('ACE_STATIC_AVATOR_URL', ACE_STATIC_URL.'/avatars');
+		defined('CMS_STATIC_URL') or define('CMS_STATIC_URL', STATIC_URL.'/cms');
+		defined('CMS_STATIC_CSS_URL') or define('CMS_STATIC_CSS_URL', CMS_STATIC_URL.'/css');
 	}
 	
 	/**

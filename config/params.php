@@ -4,10 +4,11 @@ return [
     'adminEmail' => 'admin@example.com',
     'noLogin' => [
         'login' => ['index'],
-        'common' => ['verify']
+        'common' => ['verify'],
     ],
     //定义权限
     'auth' => [
-        'college' => ['*' => CMS_ADMIN_SUPER_LEVEL]
+        'college' => ['*' => CMS_ADMIN_SUPER_LEVEL],
+        'college-admin' => ['*' => CMS_ADMIN_SUPER_LEVEL]
     ]
 ];

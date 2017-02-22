@@ -24,11 +24,21 @@ function activeLi(string $controllerId, string $actionId = null) : string{
 			<span class="menu-text"> 欢迎页面 </span>
 		</a>
 	</li>
+	
 	<?php if (CmsAdmin::hasPremiss('college', 'index')):?>
 		<li <?=activeLi('college')?>>
 			<a href="<?=Yii::$app->urlManager->createUrl('/college')?>">
 				<i class="icon-bookmark"></i>
 				<span class="menu-text"> 学校管理 </span>
+			</a>
+		</li>
+	<?php endif;?>
+	
+	<?php if (CmsAdmin::hasPremiss('product-cat', 'index')):?>
+		<li <?=activeLi('product-cat')?>>
+			<a href="<?=Yii::$app->urlManager->createUrl('/product-cat')?>">
+				<i class="icon-bar-chart"></i>
+				<span class="menu-text"> 商品类型管理 </span>
 			</a>
 		</li>
 	<?php endif;?>

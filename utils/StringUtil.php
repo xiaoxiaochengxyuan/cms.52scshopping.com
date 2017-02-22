@@ -34,4 +34,16 @@ class StringUtil {
 	public static function decryStr($str, $key='5BAB6FAC-4283-4ebe-AE97-3CBCA9CA70B0') {
 		return trim(@mcrypt_decrypt(MCRYPT_BLOWFISH, $key, base64_decode($str), MCRYPT_MODE_ECB));
 	}
+	
+	/**
+	 * 判断是否是手机号码
+	 * @param string $mobile 对应的手机号码
+	 * @return bool 是返回true,否则返回false
+	 */
+	public static function isMobile(string $mobile) : bool {
+		if (empty($mobile) || !is_numeric($mobile)) {
+			return false;
+		}
+		return !!preg_match("/^1[34578]{1}\d{9}$/", $mobile);
+	}
 }

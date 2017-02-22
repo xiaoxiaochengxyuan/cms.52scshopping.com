@@ -65,7 +65,7 @@ class CollegeController extends BaseWebController {
 			$post = \Yii::$app->request->post('CollegeForm');
 			$collegeForm->setAttributes($post, false);
 			if ($collegeForm->validate() && College::instance()->update($post['id'], $post)) {
-				$this->addSuccMsg('添加大学成功');
+				$this->addSuccMsg('修改大学成功');
 			}
 		} else {
 			$id = \Yii::$app->request->get('id');

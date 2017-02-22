@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+span.error {
+	background: #CA5952;
+	display: inline-block;
+	color:white;
+	padding: 8px 12px;
+}

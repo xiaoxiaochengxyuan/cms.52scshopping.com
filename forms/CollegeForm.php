@@ -48,7 +48,7 @@ class CollegeForm extends Model {
 	 */
 	public function rules() {
 		return [
-			['name', 'checkName', 'on' => ['add'], 'skipOnEmpty' => false],
+			['name', 'checkName', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['detail_address', 'required', 'on' => ['add'], 'message' => '详细地址必须填写']
 		];
 	}
@@ -59,8 +59,10 @@ class CollegeForm extends Model {
 	public function checkName() {
 		if (empty($this->name)) {
 			$this->addError('name', '名字不能为空');
-		} elseif (College::instance()->existsByColumn('name', $this->name)) {
+		} elseif ($this->getScenario() == 'add' && College::instance()->existsByColumn('name', $this->name)) {
 			$this->addError('name', '该大学已经被添加过');
+		} elseif ($this->getScenario() == 'update' && College::instance()->existsNameWithoutId($this->name, $this->id)) {
+			$this->addError('name', '该大学已存在');
 		}
 	}
 }

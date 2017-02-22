@@ -46,4 +46,17 @@ class College extends BaseDao {
 			->limit($pagination->getLimit())
 			->all($this->db());
 	}
+	
+	/**
+	 * 判断除了对应id之外的数据有没有对应的name的
+	 * @param string $name
+	 * @param int $id
+	 * @return bool
+	 */
+	public function existsNameWithoutId(string $name, int $id) : bool {
+		return $this->createQuery()
+			->from($this->tableName())
+			->where('name=:name and id<>:id', [':name' => $name, ':id' => $id])
+			->exists(self::db());
+	}
 }
