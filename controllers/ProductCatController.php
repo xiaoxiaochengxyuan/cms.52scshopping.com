@@ -57,4 +57,16 @@ class ProductCatController extends BaseWebController {
 		}
 		return 'success';
 	}
+	
+	/**
+	 * 修改分类
+	 */
+	public function actionUpdate() {
+		$id = \Yii::$app->request->get('id');
+		$productCat = ProductCat::instance()->get($id);
+		$productCatForm = new ProductCatForm();
+		$productCatForm->setScenario('update');
+		$productCatForm->setAttributes($productCat, false);
+		return $this->render('update', ['productCatForm' => $productCatForm]);
+	}
 }
