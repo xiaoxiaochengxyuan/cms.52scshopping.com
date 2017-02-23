@@ -8,6 +8,11 @@ use app\daos\ProductCat;
  */
 class ProductCatForm extends Model {
 	/**
+	 * 商品Id
+	 * @var integer
+	 */
+	public $id = 0;
+	/**
 	 * 商品分类名称
 	 * @var string
 	 */
