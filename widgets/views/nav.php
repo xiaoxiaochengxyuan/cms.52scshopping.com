@@ -42,4 +42,13 @@ function activeLi(string $controllerId, string $actionId = null) : string{
 			</a>
 		</li>
 	<?php endif;?>
+	
+	<?php if (CmsAdmin::hasPremiss('product', 'index')):?>
+		<li <?=activeLi('product')?>>
+			<a href="<?=Yii::$app->urlManager->createUrl('/product')?>">
+				<i class="icon-gift"></i>
+				<span class="menu-text"> 商品管理 </span>
+			</a>
+		</li>
+	<?php endif;?>
 </ul>

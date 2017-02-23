@@ -34,6 +34,8 @@ $actionId = $this->context->action->id;
 			<script src="<?=ACE_STATIC_JS_URL?>/html5shiv.js"></script>
 			<script src="<?=ACE_STATIC_JS_URL?>/respond.min.js"></script>
 		<![endif]-->
+		
+		<script src="<?=ACE_STATIC_JS_URL?>/jquery-1.10.2.min.js"></script>
 	</head>
 
 	<body>
@@ -141,8 +143,6 @@ $actionId = $this->context->action->id;
 		</div><!-- /.main-container -->
 
 		<!-- basic scripts -->
-		
-		<script src="<?=ACE_STATIC_JS_URL?>/jquery-1.10.2.min.js"></script>
 
 		<script type="text/javascript">
 			if("ontouchend" in document) document.write("<script src='<?=ACE_STATIC_JS_URL?>/jquery.mobile.custom.min.js'>"+"<"+"script>");

@@ -1,6 +1,3 @@
-<?php
-use yii\widgets\LinkPager;
-?>
 <div class="breadcrumbs" id="breadcrumbs">
 	<script type="text/javascript">
 		try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
@@ -11,7 +8,7 @@ use yii\widgets\LinkPager;
 			<i class="icon-home home-icon"></i>
 			<a href="<?=Yii::$app->urlManager->createUrl('/product-cat')?>">商品类型管理</a>
 		</li>
-		<li class="active">欢迎页面</li>
+		<li class="active">类型列表</li>
 	</ul>
 </div>
 
@@ -21,7 +18,7 @@ use yii\widgets\LinkPager;
 			商品类型管理
 			<small>
 				<i class="icon-double-angle-right"></i>
-				欢迎页面
+				类型列表
 			</small>
 			<a href="<?=Yii::$app->urlManager->createUrl(['/product-cat/add', 'pid' => $pid])?>" class="btn btn-xs btn-pink" style="float: right;">
 				<?php if ($pid == 0):?>
@@ -31,7 +28,7 @@ use yii\widgets\LinkPager;
 				<?php endif;?>
 			</a>
 		</h1>
-	</div><!-- /.page-header -->
+	</div>
 
 	<div class="row">
 		<div class="col-xs-12">

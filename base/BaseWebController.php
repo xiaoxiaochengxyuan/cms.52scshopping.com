@@ -45,6 +45,11 @@ abstract class BaseWebController extends Controller {
 		defined('ACE_STATIC_AVATOR_URL') or define('ACE_STATIC_AVATOR_URL', ACE_STATIC_URL.'/avatars');
 		defined('CMS_STATIC_URL') or define('CMS_STATIC_URL', STATIC_URL.'/cms');
 		defined('CMS_STATIC_CSS_URL') or define('CMS_STATIC_CSS_URL', CMS_STATIC_URL.'/css');
+		defined('UPLOADIFY_STATIC_URL') or define('UPLOADIFY_STATIC_URL', STATIC_URL.'/uploadify');
+		defined('KINDEDITOR_STATIC_URL') or define('KINDEDITOR_STATIC_URL', STATIC_URL.'/kindeditor');
+		defined('KINDEDITOR_LANG_STATIC_URL') or define('KINDEDITOR_LANG_STATIC_URL', KINDEDITOR_STATIC_URL.'/lang');
+		defined('KINDEDITOR_PLUGINS_STATIC_URL') or define('KINDEDITOR_PLUGINS_STATIC_URL', KINDEDITOR_STATIC_URL.'/plugins');
+		defined('KINDEDITOR_THEMES_STATIC_URL') or define('KINDEDITOR_THEMES_STATIC_URL', KINDEDITOR_STATIC_URL.'/themes');
 	}
 	
 	/**

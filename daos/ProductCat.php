@@ -59,4 +59,18 @@ class ProductCat extends BaseDao {
 			->orderBy(['pc.update_time' => SORT_DESC])
 			->all(self::db());
 	}
+	
+	/**
+	 * 获取商品类型下拉列表数据
+	 * @param int $pid 对应的父级id
+	 * @return array
+	 */
+	public function dropListData(int $pid) : array {
+		$productCats = $this->createQuery()
+			->select(['id', 'name'])
+			->from($this->tableName())
+			->where('pid=:pid', [':pid' => $pid])
+			->all();
+		return array_column($productCats, 'name', 'id');
+	}
 }
