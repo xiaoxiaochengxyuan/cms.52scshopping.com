@@ -1,6 +1,8 @@
 <?php
 namespace app\forms;
 use yii\base\Model;
+use app\utils\CommonUtil;
+use app\daos\ProductCat;
 /**
  * 商品表单
  * @author xiawei
@@ -77,4 +79,186 @@ class ProductForm extends Model {
 	 * @var integer
 	 */
 	public $cat_id = 0;
+	
+	
+	/**
+	 * 是否是缺货必发
+	 * @var int 
+	 */
+	public $need_send = 0;
+	
+	/**
+	 * 警告数量,当库存小于这个值的时候提醒发货
+	 * @var integer
+	 */
+	public $warn_number = 0;
+	
+	/**
+	 * 进货价格
+	 * @var integer
+	 */
+	public $stock_price = 0;
+	
+	
+	/**
+	 * 商品选项
+	 * @var string
+	 */
+	public $options = null;
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \yii\base\Model::rules()
+	 */
+	public function rules() {
+		return [
+			['name', 'required', 'on' => ['add'], 'message' => '商品名称补习填写'],
+			['stock_price', 'checkStockPrice', 'on' => ['add'], 'skipOnEmpty' => false],
+			['price', 'checkPrice', 'on' => ['add'], 'skipOnEmpty' => false],
+			['number', 'checkNumber', 'on' => ['add'], 'skipOnEmpty' => false],
+			['show_buy_number', 'checkShowBuyNumber', 'on' => ['add'], 'skipOnEmpty' => false],
+			['parameters', 'checkParamters', 'on' => ['add'], 'skipOnEmpty' => false],
+			['desc', 'required', 'on' => ['add'], 'message' => '商品详情不能为空'],
+			['create_place', 'required', 'on' => ['add'], 'message' => '商品产地不能为空'],
+			['title_img', 'required', 'on' => ['add'], 'message' => '标题图片不正确'],
+			['list_imgs', 'checkListImg', 'on' => ['add'], 'skipOnEmpty' => false],
+			['top_cat_id', 'checkTopCatId', 'on' => ['add'], 'skipOnEmpty' => false],
+			['cat_id', 'checkCatId', 'on' => ['add'], 'skipOnEmpty' => false],
+			['need_send', 'checkNeedSend', 'on' => ['add'], 'skipOnEmpty' => false],
+			['warn_number', 'checkWarnNumber', 'on' => ['add'], 'skipOnEmpty' => false],
+			['options', 'checkOptions', 'on' => ['add'], 'skipOnEmpty' => false]
+		];
+	}
+	
+	/**
+	 * 检查进货价格
+	 */
+	public function checkStockPrice() : void {
+		if (!CommonUtil::isPlusNumber($this->stock_price)) {
+			$this->addError('stock_price', '商品进货价格必须是一个正数');
+		}
+	}
+	
+	/**
+	 * 检查商品价格
+	 */
+	public function checkPrice() : void {
+		if (!is_numeric($this->price)) {
+			$this->addError('price', '商品价格必须是一个数字');
+		} elseif ($this->price < $this->stock_price) {
+			$this->addError('price', '商品价格不能小于进货价格');
+		}
+	}
+	
+	/**
+	 * 检查商品库存
+	 */
+	public function checkNumber() : void {
+		if (!CommonUtil::isPlusNumber($this->number)) {
+			$this->addError('number', '商品库存必须是一个正数');
+		}
+	}
+	
+	/**
+	 * 检查显示购买人数
+	 */
+	public function checkShowBuyNumber() : void {
+		if (!CommonUtil::isPlusNumber($this->show_buy_number)) {
+			$this->addError('show_buy_number', '初始显示购买人数不能为空');
+		}
+	}
+	
+	/**
+	 * 检查参数
+	 */
+	public function checkParamters() : void {
+		foreach ($this->parameters as $parameter) {
+			if (!isset($parameter['name']) && !isset($parameter['value'])) {
+				$this->addError('parameters', '不能有空行');
+				break;
+			}
+			if (!isset($parameter['name'])) {
+				$this->addError('parameters', "值为‘{$parameter['value']}’的参数没有对应的名称");
+				break;
+			}
+			if (!isset($parameter['value'])) {
+				$this->addError('parameters', "名称为‘{$parameter['value']}’的参数没有对应值");
+				break;
+			}
+		}
+	}
+	
+	
+	/**
+	 * 检查列表图片
+	 */
+	public function checkListImg() : void {
+		if (empty($this->list_imgs)) {
+			$this->addError('list_imgs', '列表图片必须上传');
+		} else {
+			foreach ($this->list_imgs as $img) {
+				if (empty($img)) {
+					$this->addError('list_imgs', '列表图片有错');
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 检查顶级分类Id
+	 */
+	public function checkTopCatId() : void {
+		$topProductCat = ProductCat::instance()->get($this->top_cat_id);
+		if (empty($topProductCat)) {
+			$this->addError('top_cat_id', '没有该顶级分类');
+		} elseif ($topProductCat['pid'] != 0) {
+			$this->addError('top_cat_id', '该顶级分类不是顶级分类');
+		}
+	}
+	
+	/**
+	 * 检查普通分类Id
+	 */
+	public function checkCatId() : void {
+		$productCat = ProductCat::instance()->get($this->cat_id);
+		if (empty($productCat)) {
+			$this->addError('top_cat_id', '没有该普通分类');
+		} elseif ($productCat['pid'] == 0) {
+			$this->addError('top_cat_id', '该普通分类是顶级分类');
+		}
+	}
+	
+	/**
+	 * 验证缺货必发
+	 */
+	public function checkNeedSend() : void {
+		if (!in_array($this->need_send, [0, 1])) {
+			$this->addError('need_send', '是否时缺货必发不正确');
+		}
+	}
+	
+	
+	/**
+	 * 检查警告数量
+	 */
+	public function checkWarnNumber() : void {
+		if (!CommonUtil::isPlusNumber($this->warn_number)) {
+			$this->addError('warn_number', '警告数量必须是一个正整数');
+		} elseif ($this->warn_number >= $this->number) {
+			$this->addError('warn_number', '警告数量不能超过库存');
+		}
+	}
+	
+	
+	/**
+	 * 检查商品选项
+	 */
+	public function checkOptions() : void {
+		foreach ($this->options as $option) {
+			if (!isset($option['name']) || !isset($option['value'])) {
+				$this->addError('name', '商品选项格式错误');
+				break;
+			}
+		}
+	}
 }

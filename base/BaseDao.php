@@ -2,7 +2,6 @@
 namespace app\base;
 use yii\db\Query;
 use yii\db\Connection;
-use phpDocumentor\Reflection\Types\String_;
 use yii\data\Pagination;
 
 /**
@@ -154,7 +153,7 @@ abstract class BaseDao {
 	 * @param string $select 要查询的字段
 	 * @return array
 	 */
-	public function get(int $id, $select = '*') : array {
+	public function get(int $id, $select = '*') {
 		return $this->createQuery()
 			->select($select)
 			->from($this->tableName())
@@ -306,5 +305,14 @@ abstract class BaseDao {
 	 */
 	public function deleteByColumn(string $columnName, string $columnValue) {
 		return self::db()->createCommand()->delete($this->tableName(), "{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])->execute();
+	}
+	
+	/**
+	 * 通过主键检查数据是否存在
+	 * @param int $id 对应的主键
+	 * @return boolean 存在返回true,否则返回FALSE
+	 */
+	public function existsByPrimaryKey(int $id) : bool {
+		return $this->existsByColumn($this->primaryKey(), $id);
 	}
 }

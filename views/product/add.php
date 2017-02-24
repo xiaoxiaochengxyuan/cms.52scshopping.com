@@ -2,6 +2,7 @@
 use yii\widgets\ActiveForm;
 use app\widgets\AlertMsgWidget;
 use yii\helpers\Html;
+use app\utils\OssUtil;
 ?>
 <!-- 引入uploadify -->
 <?=$this->render('/includes/uploadify')?>
@@ -43,7 +44,7 @@ $(function(){
         'buttonText': "选择列表图片",
         'onUploadSuccess': function (file, data, response) {
 	        var res = eval('(' + data + ')');
-	        var span = "<span style='border:1px solid #aaa; padding:5px;float:left;width:212px;'>" +
+	        var span = "<span style='border:1px solid #aaa; padding:5px;float:left;width:212px;margin-right:20px;'>" +
 	            "<img alt='标题图片' src='" + res.url + "' style='width:200px;height:200px;'/>" +
 	            "<input type='hidden' name='ProductForm[list_imgs][]' value='" + res.fileName + "'/>" +
 	            "<center><button type='button' style='margin-top:10px;' class='btn btn-xs btn-danger' onclick='deleteListImg(this)'>删除</button></center>" +
@@ -67,7 +68,20 @@ $(function(){
 
 function changeTopCat(obj) {
 	var topCatId = $(obj).val();
-	alert(topCatId);
+	$.get("<?=Yii::$app->urlManager->createUrl(['/product-cat/second-cat-drop-list'])?>", {
+		'pid' : topCatId
+	}, function(response) {
+		$("#secondCatList").html(response);
+	});
+}
+
+function changeProductCat(obj) {
+	var value = $(obj).val();
+	if(value == 1) {
+		$("#warn_number_input").attr('disabled', false);
+	} else {
+		$("#warn_number_input").attr('disabled', true);
+	}
 }
 </script>
 <div class="breadcrumbs" id="breadcrumbs">
@@ -111,6 +125,18 @@ function changeTopCat(obj) {
 				</div>
 				
 				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品进价： </label>
+					<div class="col-sm-6">
+						<?=Html::textInput('ProductForm[stock_price]', $productForm->stock_price, ['class' => 'form-control'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('stock_price')):?>
+							<span class="block error"><?=Html::error($productForm, 'stock_price')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品价格： </label>
 					<div class="col-sm-6">
 						<?=Html::textInput('ProductForm[price]', $productForm->price, ['class' => 'form-control'])?>
@@ -126,7 +152,7 @@ function changeTopCat(obj) {
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所属分类： </label>
 					<div class="col-sm-6">
 						<?=Html::dropDownList('ProductForm[top_cat_id]', $productForm->top_cat_id, $topProductCats, ['style' => 'width:100px;', 'onchange' => 'changeTopCat(this)'])?>&nbsp;&nbsp;
-						<?=Html::dropDownList('ProductForm[cat_id]', $productForm->cat_id, $productCats, ['style' => 'width:100px;'])?>
+						<?=Html::dropDownList('ProductForm[cat_id]', $productForm->cat_id, $productCats, ['style' => 'width:100px;', 'id' => 'secondCatList'])?>
 					</div>
 					<div class="col-sm-3">
 						<?php if ($productForm->hasErrors('price')):?>
@@ -134,6 +160,33 @@ function changeTopCat(obj) {
 						<?php endif;?>
 					</div>
 				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 缺货必发： </label>
+					<div class="col-sm-6">
+						<?=Html::dropDownList('ProductForm[need_send]', $productForm->need_send, ['否', '是'], ['onchange' => 'changeProductCat(this)'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('need_send')):?>
+							<span class="block error"><?=Html::error($productForm, 'need_send')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 警告数量： </label>
+					<div class="col-sm-6">
+						<?php $options = ['class' => 'form-control', 'disabled' => $productForm->need_send == 0, 'id' => 'warn_number_input'];?>
+						<?=Html::textInput('ProductForm[warn_number]', $productForm->warn_number, $options)?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('warn_number')):?>
+							<span class="block error"><?=Html::error($productForm, 'warn_number')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
 				
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 初始商品库存： </label>
@@ -162,13 +215,26 @@ function changeTopCat(obj) {
 				
 				
 				<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品参数（一行一个，键和值用->隔开）： </label>
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品参数（一行一个，键和值用英文冒号隔开）： </label>
 					<div class="col-sm-6">
 						<?=Html::textarea('ProductForm[parameters]', $productForm->parameters, ['class' => 'form-control', 'style' => 'resize:none;height:220px;'])?>
 					</div>
 					<div class="col-sm-3">
 						<?php if ($productForm->hasErrors('parameters')):?>
 							<span class="block error"><?=Html::error($productForm, 'parameters')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品选项（一行一个，键和值用英文冒号隔开）： </label>
+					<div class="col-sm-6">
+						<?=Html::textarea('ProductForm[options]', $productForm->options, ['class' => 'form-control', 'style' => 'resize:none;height:220px;'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('parameters')):?>
+							<span class="block error"><?=Html::error($productForm, 'options')?></span>
 						<?php endif;?>
 					</div>
 				</div>
@@ -204,6 +270,9 @@ function changeTopCat(obj) {
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
 					<div class="col-sm-6" id="title_img_div">
+						<?php if (!empty($productForm->title_img)):?>
+							<img alt='标题图片' src='<?=OssUtil::getOssImg($productForm->title_img)?>' style='width:200px;height:200px;'/>
+						<?php endif;?>
 					</div>
 					<div class="col-sm-3">
 					</div>
@@ -226,6 +295,15 @@ function changeTopCat(obj) {
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"></label>
 					<div class="col-sm-6" id="list_img_div">
+						<?php if (!empty($productForm->list_imgs)):?>
+							<?php foreach ($productForm->list_imgs as $list_img):?>
+								<span style='border:1px solid #aaa; padding:5px; float:left; width:212px; margin-right:20px;'>
+									<img alt='标题图片' src='<?=OssUtil::getOssImg($list_img)?>' style='width:200px;height:200px;'/>" +
+									<input type='hidden' name='ProductForm[list_imgs][]' value='<?=$list_img?>'/>
+									<center><button type='button' style='margin-top:10px;' class='btn btn-xs btn-danger' onclick='deleteListImg(this)'>删除</button></center>
+								</span>
+							<?php endforeach;?>
+						<?php endif;?>
 					</div>
 					<div class="col-sm-3">
 					</div>
@@ -242,6 +320,7 @@ function changeTopCat(obj) {
 						<?php endif;?>
 					</div>
 				</div>
+				
 				
 				
 				<div class="clearfix form-actions">

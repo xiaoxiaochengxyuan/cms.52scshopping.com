@@ -69,4 +69,13 @@ class ProductCatController extends BaseWebController {
 		$productCatForm->setAttributes($productCat, false);
 		return $this->render('update', ['productCatForm' => $productCatForm]);
 	}
+	
+	/**
+	 * 获取子分类的下拉列表
+	 */
+	public function actionSecondCatDropList() {
+		$pid = \Yii::$app->request->get('pid');
+		$productCats = ProductCat::instance()->dropListData($pid);
+		return $this->renderPartial('second-cat-drop-list', ['productCats' => $productCats]);
+	}
 }
