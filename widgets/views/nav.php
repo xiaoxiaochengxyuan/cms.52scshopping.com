@@ -4,7 +4,7 @@ use app\daos\CmsAdmin;
 global $currentControllerId,$currentActionId;
 $currentControllerId = $controllerId;
 $currentActionId = $actionId;
-function activeLi(string $controllerId, string $actionId = null) : string{
+function activeLi($controllerId, $actionId = null) {
 	global $currentControllerId,$currentActionId;
 	if ($controllerId == $currentControllerId) {
 		if (!empty($actionId)) {

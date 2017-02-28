@@ -18,7 +18,7 @@ class OssUtil {
 	 * 获取阿里OssClient客户端
 	 * @return \OSS\OssClient
 	 */
-	private static function getOssClient() : OssClient {
+	private static function getOssClient() {
 		if (empty(self::$OSS_CLIENT)) {
 			self::$OSS_CLIENT = new OssClient(
 				\Yii::$app->params['oss']['accessKeyId'],

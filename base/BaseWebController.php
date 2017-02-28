@@ -10,7 +10,7 @@ abstract class BaseWebController extends Controller {
 	 * {@inheritDoc}
 	 * @see \yii\base\Component::behaviors()
 	 */
-	public function behaviors():array {
+	public function behaviors() {
 		return [[
 			'class' => 'app\filters\LoginFilter',
 		]];
@@ -37,7 +37,7 @@ abstract class BaseWebController extends Controller {
 	/**
 	 * 定义一些在模板中需要使用的常量
 	 */
-	private function defineStatic() : void {
+	private function defineStatic() {
 		defined('STATIC_URL') or define('STATIC_URL', \Yii::$app->urlManager->baseUrl.'/static');
 		defined('ACE_STATIC_URL') or define('ACE_STATIC_URL', STATIC_URL.'/ace');
 		defined('ACE_STATIC_JS_URL') or define('ACE_STATIC_JS_URL', ACE_STATIC_URL.'/js');
@@ -56,7 +56,7 @@ abstract class BaseWebController extends Controller {
 	 * 添加成功信息
 	 * @param string $msg 成功信息
 	 */
-	protected function addSuccMsg(string $msg) : void {
+	protected function addSuccMsg($msg) {
 		if (empty($this->view->params['succ'])) {
 			$this->view->params['succ'] = [];
 		}
@@ -67,7 +67,7 @@ abstract class BaseWebController extends Controller {
 	 * 添加警告信息
 	 * @param string $msg
 	 */
-	protected function addWarnMsg(string $msg) : void {
+	protected function addWarnMsg($msg) {
 		if (empty($this->view->params['warn'])) {
 			$this->view->params['warn'] = [];
 		}
@@ -78,7 +78,7 @@ abstract class BaseWebController extends Controller {
 	 * 添加错误信息
 	 * @param string $msg
 	 */
-	protected function addErrMsg(string $msg) : void {
+	protected function addErrMsg($msg) {
 		if (empty($this->view->params['err'])) {
 			$this->view->params['err'] = [];
 		}

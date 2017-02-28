@@ -11,7 +11,7 @@ class StringUtil {
 	 * @param string $salt 加密盐
 	 * @return string
 	 */
-	public static function genPassword(string $password, string $salt) : string {
+	public static function genPassword($password, $salt) {
 		return sha1(md5($password).sha1($salt));
 	}
 	
@@ -40,7 +40,7 @@ class StringUtil {
 	 * @param string $mobile 对应的手机号码
 	 * @return bool 是返回true,否则返回false
 	 */
-	public static function isMobile(string $mobile) : bool {
+	public static function isMobile($mobile) {
 		if (empty($mobile) || !is_numeric($mobile)) {
 			return false;
 		}

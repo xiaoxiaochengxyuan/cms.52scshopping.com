@@ -115,6 +115,7 @@ function chgNeedSend(obj) {
 	<div class="row">
 		<div class="col-xs-12">
 			<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']])?>
+				<?=Html::hiddenInput('ProductForm[id]', $productForm->id)?>
 				<?=AlertMsgWidget::widget(['view' => $this])?>
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品名称： </label>
@@ -313,7 +314,7 @@ function chgNeedSend(obj) {
 						<?php if (!empty($productForm->list_imgs)):?>
 							<?php foreach ($productForm->list_imgs as $list_img):?>
 								<span style='border:1px solid #aaa; padding:5px; float:left; width:212px; margin-right:20px;margin-bottom:10px;'>
-									<img alt='标题图片' src='<?=OssUtil::getOssImg($list_img)?>' style='width:200px;height:200px;'/>" +
+									<img alt='标题图片' src='<?=OssUtil::getOssImg($list_img)?>' style='width:200px;height:200px;'/>
 									<input type='hidden' name='ProductForm[list_imgs][]' value='<?=$list_img?>'/>
 									<center><button type='button' style='margin-top:10px;' class='btn btn-xs btn-danger' onclick='deleteListImg(this)'>删除</button></center>
 								</span>

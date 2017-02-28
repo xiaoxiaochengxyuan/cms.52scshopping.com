@@ -47,7 +47,7 @@ class CollegeAdminForm extends Model {
 	/**
 	 * 检查用户名
 	 */
-	public function checkUsername() : void {
+	public function checkUsername() {
 		if (empty($this->username)) {
 			$this->addError('username', '用户名必须填写');
 		} elseif ($this->getScenario() == 'add' && CollegeAdmin::instance()->existsByColumn('username', $this->username)) {

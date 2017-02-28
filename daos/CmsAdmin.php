@@ -21,7 +21,7 @@ class CmsAdmin extends BaseDao {
 	 * {@inheritDoc}
 	 * @see \app\base\BaseDao::tableName()
 	 */
-	protected function tableName() : string {
+	protected function tableName() {
 		return self::TABLE_NAME;
 	}
 	
@@ -30,7 +30,7 @@ class CmsAdmin extends BaseDao {
 	 * @param string $className
 	 * @return CmsAdmin
 	 */
-	public static function instance(string $className = __CLASS__) {
+	public static function instance($className = __CLASS__) {
 		return parent::instance($className);
 	}
 	
@@ -38,7 +38,7 @@ class CmsAdmin extends BaseDao {
 	 * {@inheritDoc}
 	 * @see \app\base\BaseDao::insert()
 	 */
-	public function insert(array $data) : int {
+	public function insert($data) {
 		$salt = \Yii::$app->getSecurity()->generateRandomString(8);
 		$insertData = [
 			'username' => $data['username'],
@@ -52,7 +52,7 @@ class CmsAdmin extends BaseDao {
 	 * 用户登录
 	 * @param array $data
 	 */
-	public static function login(array $data) : void {
+	public static function login($data) {
 		if (isset($data['password'])) {
 			unset($data['password']);
 		}
@@ -69,7 +69,7 @@ class CmsAdmin extends BaseDao {
 	 * 判断用户是否登录
 	 * @return bool
 	 */
-	public static function isLogin() : bool {
+	public static function isLogin() {
 		try {
 			$loginCookieStr = \Yii::$app->request->cookies->getValue(self::CMS_ADMIN_COOKIE_KEY);
 			$loginJsonStr = StringUtil::decryStr($loginCookieStr);
@@ -88,7 +88,7 @@ class CmsAdmin extends BaseDao {
 	 * @param string $field 对应的字段
 	 * @return mixed|NULL|NULL
 	 */
-	public static function loginInfo(string $field = null) {
+	public static function loginInfo($field = null) {
 		if (self::isLogin()) {
 			$loginCookieStr = \Yii::$app->request->cookies->getValue(self::CMS_ADMIN_COOKIE_KEY);
 			$loginJsonStr = StringUtil::decryStr($loginCookieStr);
@@ -104,7 +104,7 @@ class CmsAdmin extends BaseDao {
 	/**
 	 * 用户退出登录
 	 */
-	public static function logout() : void {
+	public static function logout() {
 		\Yii::$app->response->cookies->remove(self::CMS_ADMIN_COOKIE_KEY);
 	}
 	
@@ -114,7 +114,7 @@ class CmsAdmin extends BaseDao {
 	 * @param string $password
 	 * @return int 影响的行数
 	 */
-	public function changePasswd(int $id, string $password) : int {
+	public function changePasswd($id, $password) {
 		$salt = \Yii::$app->getSecurity()->generateRandomString(8);
 		$data = [
 			'salt' => $salt,
@@ -129,7 +129,7 @@ class CmsAdmin extends BaseDao {
 	 * @param string $actionId 对应的Action的Id
 	 * @return boolean 有权限返回true,否则返回false
 	 */
-	public static function hasPremiss(string $controllerId, string $actionId) : bool {
+	public static function hasPremiss($controllerId, $actionId) {
 		$auth = \Yii::$app->params['auth'];
 		//如果需要权限验证
 		if (isset($auth[$controllerId]) && (isset($auth[$controllerId]['*']) || isset($auth[$controllerId][$actionId]))) {

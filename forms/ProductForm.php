@@ -9,6 +9,12 @@ use app\daos\ProductCat;
  */
 class ProductForm extends Model {
 	/**
+	 * 商品id
+	 * @var integer
+	 */
+	public $id = 0;
+	
+	/**
 	 * 商品名称
 	 * @var string
 	 */
@@ -106,34 +112,41 @@ class ProductForm extends Model {
 	 */
 	public $options = null;
 	
+	
+	/**
+	 * 是否上线,0为否,1为是
+	 * @var integer
+	 */
+	public $grounding = 0;
+	
 	/**
 	 * {@inheritDoc}
 	 * @see \yii\base\Model::rules()
 	 */
 	public function rules() {
 		return [
-			['name', 'required', 'on' => ['add'], 'message' => '商品名称补习填写'],
-			['stock_price', 'checkStockPrice', 'on' => ['add'], 'skipOnEmpty' => false],
-			['price', 'checkPrice', 'on' => ['add'], 'skipOnEmpty' => false],
-			['number', 'checkNumber', 'on' => ['add'], 'skipOnEmpty' => false],
-			['show_buy_number', 'checkShowBuyNumber', 'on' => ['add'], 'skipOnEmpty' => false],
-			['parameters', 'checkParamters', 'on' => ['add'], 'skipOnEmpty' => false],
-			['desc', 'required', 'on' => ['add'], 'message' => '商品详情不能为空'],
-			['create_place', 'required', 'on' => ['add'], 'message' => '商品产地不能为空'],
-			['title_img', 'required', 'on' => ['add'], 'message' => '标题图片不正确'],
-			['list_imgs', 'checkListImg', 'on' => ['add'], 'skipOnEmpty' => false],
-			['top_cat_id', 'checkTopCatId', 'on' => ['add'], 'skipOnEmpty' => false],
-			['cat_id', 'checkCatId', 'on' => ['add'], 'skipOnEmpty' => false],
-			['need_send', 'checkNeedSend', 'on' => ['add'], 'skipOnEmpty' => false],
-			['warn_number', 'checkWarnNumber', 'on' => ['add'], 'skipOnEmpty' => false],
-			['options', 'checkOptions', 'on' => ['add'], 'skipOnEmpty' => false]
+			['name', 'required', 'on' => ['add', 'update'], 'message' => '商品名称必须填写'],
+			['stock_price', 'checkStockPrice', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['price', 'checkPrice', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['number', 'checkNumber', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['show_buy_number', 'checkShowBuyNumber', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['parameters', 'checkParamters', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['desc', 'required', 'on' => ['add', 'update'], 'message' => '商品详情不能为空'],
+			['create_place', 'required', 'on' => ['add', 'update'], 'message' => '商品产地不能为空'],
+			['title_img', 'required', 'on' => ['add', 'update'], 'message' => '标题图片不正确'],
+			['list_imgs', 'checkListImg', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['top_cat_id', 'checkTopCatId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['cat_id', 'checkCatId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['need_send', 'checkNeedSend', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['warn_number', 'checkWarnNumber', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['options', 'checkOptions', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
 		];
 	}
 	
 	/**
 	 * 检查进货价格
 	 */
-	public function checkStockPrice() : void {
+	public function checkStockPrice() {
 		if (!CommonUtil::isPlusNumber($this->stock_price)) {
 			$this->addError('stock_price', '商品进货价格必须是一个正数');
 		}
@@ -142,7 +155,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查商品价格
 	 */
-	public function checkPrice() : void {
+	public function checkPrice() {
 		if (!is_numeric($this->price)) {
 			$this->addError('price', '商品价格必须是一个数字');
 		} elseif ($this->price < $this->stock_price) {
@@ -153,7 +166,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查商品库存
 	 */
-	public function checkNumber() : void {
+	public function checkNumber() {
 		if (!CommonUtil::isPlusNumber($this->number)) {
 			$this->addError('number', '商品库存必须是一个正数');
 		}
@@ -162,7 +175,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查显示购买人数
 	 */
-	public function checkShowBuyNumber() : void {
+	public function checkShowBuyNumber() {
 		if (!CommonUtil::isPlusNumber($this->show_buy_number)) {
 			$this->addError('show_buy_number', '初始显示购买人数不能为空');
 		}
@@ -171,7 +184,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查参数
 	 */
-	public function checkParamters() : void {
+	public function checkParamters() {
 		foreach ($this->parameters as $parameter) {
 			if (!isset($parameter['name']) && !isset($parameter['value'])) {
 				$this->addError('parameters', '不能有空行');
@@ -192,7 +205,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查列表图片
 	 */
-	public function checkListImg() : void {
+	public function checkListImg() {
 		if (empty($this->list_imgs)) {
 			$this->addError('list_imgs', '列表图片必须上传');
 		} else {
@@ -207,7 +220,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查顶级分类Id
 	 */
-	public function checkTopCatId() : void {
+	public function checkTopCatId() {
 		$topProductCat = ProductCat::instance()->get($this->top_cat_id);
 		if (empty($topProductCat)) {
 			$this->addError('top_cat_id', '没有该顶级分类');
@@ -219,7 +232,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查普通分类Id
 	 */
-	public function checkCatId() : void {
+	public function checkCatId() {
 		$productCat = ProductCat::instance()->get($this->cat_id);
 		if (empty($productCat)) {
 			$this->addError('top_cat_id', '没有该普通分类');
@@ -231,7 +244,7 @@ class ProductForm extends Model {
 	/**
 	 * 验证缺货必发
 	 */
-	public function checkNeedSend() : void {
+	public function checkNeedSend() {
 		if (!in_array($this->need_send, [0, 1])) {
 			$this->addError('need_send', '是否时缺货必发不正确');
 		}
@@ -241,7 +254,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查警告数量
 	 */
-	public function checkWarnNumber() : void {
+	public function checkWarnNumber() {
 		if (!CommonUtil::isPlusNumber($this->warn_number)) {
 			$this->addError('warn_number', '警告数量必须是一个正整数');
 		} elseif ($this->warn_number >= $this->number) {
@@ -253,7 +266,7 @@ class ProductForm extends Model {
 	/**
 	 * 检查商品选项
 	 */
-	public function checkOptions() : void {
+	public function checkOptions() {
 		foreach ($this->options as $option) {
 			if (!isset($option['name']) || !isset($option['value'])) {
 				$this->addError('name', '商品选项格式错误');

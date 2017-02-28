@@ -16,7 +16,7 @@ class ProductCat extends BaseDao {
 	 * {@inheritDoc}
 	 * @see \app\base\BaseDao::tableName()
 	 */
-	protected function tableName() : string {
+	protected function tableName() {
 		return self::TABLE_NAME;
 	}
 	
@@ -25,7 +25,7 @@ class ProductCat extends BaseDao {
 	 * @param string $className
 	 * @return ProductCat
 	 */
-	public static function instance(string $className = __CLASS__) {
+	public static function instance($className = __CLASS__) {
 		return parent::instance($className);
 	}
 	
@@ -37,7 +37,7 @@ class ProductCat extends BaseDao {
 	 * @param int $pid
 	 * @return boolean
 	 */
-	public function existsByColumnAndPid(string $columnName, string $columnValue, int $pid) {
+	public function existsByColumnAndPid($columnName, $columnValue, $pid) {
 		return $this->createQuery()
 			->from($this->tableName())
 			->where("{$columnName}=:{$columnName} and pid=:pid", [":{$columnName}" => $columnValue, ':pid' => $pid])
@@ -50,7 +50,7 @@ class ProductCat extends BaseDao {
 	 * @param integer $pid 对应的父Id
 	 * @return array
 	 */
-	public function getIndexData(int $pid) : array {
+	public function getIndexData($pid) {
 		return $this->createQuery()
 			->select(['pc.id', 'pc.name', 'pc.en_name', 'ppc.name as ppc_name'])
 			->from($this->tableName().' pc')
@@ -65,12 +65,27 @@ class ProductCat extends BaseDao {
 	 * @param int $pid 对应的父级id
 	 * @return array
 	 */
-	public function dropListData(int $pid) : array {
+	public function dropListData($pid) {
 		$productCats = $this->createQuery()
 			->select(['id', 'name'])
 			->from($this->tableName())
 			->where('pid=:pid', [':pid' => $pid])
-			->all();
+			->all(self::db());
 		return array_column($productCats, 'name', 'id');
+	}
+	
+	/**
+	 * 通过条件列和pid判断主键不为id的值是否存在
+	 * @param string $columnName 条件列名
+	 * @param string $columnValue 条件列值
+	 * @param int $pid 对应的父id
+	 * @param int $id 对应的id
+	 * @return bool 存在返回true,否则返回false
+	 */
+	public function existsColumnAndPidWithoutId($columnName, $columnValue, $pid, $id) {
+		return $this->createQuery()
+			->from($this->tableName())
+			->where("{$columnName}=:{$columnName} and pid=:pid and id<>:id", [":{$columnName}" => $columnValue, ':pid' => $pid, ':id' => $id])
+			->exists(self::db());
 	}
 }

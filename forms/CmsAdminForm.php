@@ -58,7 +58,7 @@ class CmsAdminForm extends Model {
 	/**
 	 * 检查验证码
 	 */
-	public function checkVerify() : void {
+	public function checkVerify() {
 		if (empty($this->verifyCode)) {
 			$this->addError('verifyCode', '验证码必须填写');
 		} elseif (VerifyUtil::checkVerify($this->verifyCode)) {
@@ -70,7 +70,7 @@ class CmsAdminForm extends Model {
 	 * 管理员登录
 	 * @return bool true表示登录成功,false表示登录失败
 	 */
-	public function login() : bool {
+	public function login() {
 		$cmsAdmin = CmsAdmin::instance()->getByColumn('username', $this->username);
 		if (empty($cmsAdmin)) {
 			$this->addError('username', '用户名错误');
@@ -87,7 +87,7 @@ class CmsAdminForm extends Model {
 	/**
 	 * 检查旧密码
 	 */
-	public function checkOldPassword() : void {
+	public function checkOldPassword() {
 		if (empty($this->oldPassword)) {
 			$this->addError('oldPassword', '就密码必须填写');
 		} else {
@@ -103,7 +103,7 @@ class CmsAdminForm extends Model {
 	/**
 	 * 检查密码
 	 */
-	public function checkPassword() : void {
+	public function checkPassword() {
 		$passwordName = '密码';
 		if ($this->getScenario() == 'chg-my-passwd') {
 			$passwordName = '新密码';

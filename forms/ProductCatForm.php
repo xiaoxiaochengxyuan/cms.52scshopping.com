@@ -36,7 +36,9 @@ class ProductCatForm extends Model {
 	 */
 	public function rules() {
 		return [
-			['name', 'checkName', 'on' => ['add']]
+			['name', 'checkName', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['en_name', 'checkEnName', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['pid', 'checkPid', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
 		];
 	}
 	
@@ -44,10 +46,13 @@ class ProductCatForm extends Model {
 	/**
 	 * 检查名称
 	 */
-	public function checkName() : void {
+	public function checkName() {
 		if (empty($this->name)) {
 			$this->addError('name', '商品分类名称必须填写');
-		} elseif ($this->getScenario() == 'add' && ProductCat::instance()->existsByColumnAndPid('name', $this->name, $this->pid)) {
+		} elseif (
+			($this->getScenario() == 'add' && ProductCat::instance()->existsByColumnAndPid('name', $this->name, $this->pid)) ||
+			($this->getScenario() == 'update' && ProductCat::instance()->existsColumnAndPidWithoutId('name', $this->name, $this->pid, $this->id))
+		) {
 			$this->addError('name', '商品分类名称重复');
 		}
 	}
@@ -55,11 +60,28 @@ class ProductCatForm extends Model {
 	/**
 	 * 检查对应的英文名称
 	 */
-	public function checkEnName() : void {
+	public function checkEnName() {
 		if (empty($this->en_name)) {
 			$this->addError('en_name', '商品分类英文名称必须填写');
-		} elseif ($this->getScenario() == 'add' && ProductCat::instance()->existsByColumnAndPid('en_name', $this->en_name, $this->pid)) {
+		} elseif (
+			($this->getScenario() == 'add' && ProductCat::instance()->existsByColumnAndPid('en_name', $this->en_name, $this->pid)) ||
+			($this->getScenario() == 'update' && ProductCat::instance()->existsColumnAndPidWithoutId('name', $this->name, $this->pid, $this->id))
+		) {
 			$this->addError('en_name', '商品分类英文名称重复');
+		}
+	}
+	
+	/**
+	 * 检查pid
+	 */
+	public function checkPid() {
+		if ($this->pid != 0) {
+			$productCat = ProductCat::instance()->get($this->pid);
+			if (empty($productCat)) {
+				$this->addError('pid', 'pid不存在');
+			} elseif ($productCat['pid'] != 0) {
+				$this->addError('pid', '对应的顶级分类错误');
+			}
 		}
 	}
 }

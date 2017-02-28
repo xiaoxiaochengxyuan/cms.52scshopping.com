@@ -12,7 +12,7 @@ class CommonUtil {
 	 * @param UploadedFile $uploadedFile
 	 * @return bool
 	 */
-	public static function isUploadImg(UploadedFile $uploadedFile) : bool {
+	public static function isUploadImg(UploadedFile $uploadedFile) {
 		$imageExtensions = ['jpg', 'gif', 'png'];
 		return in_array($uploadedFile->extension, $imageExtensions);
 	}
@@ -23,8 +23,8 @@ class CommonUtil {
 	 * @param $number
 	 * @return bool
 	 */
-	public static function isPlusNumber($number) : bool {
-		if (is_numeric($number) && $number >= 0) {
+	public static function isPlusNumber($number) {
+		if (is_numeric($number) && $number > 0) {
 			return true;
 		}
 		return false;

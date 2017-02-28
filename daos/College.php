@@ -17,7 +17,7 @@ class College extends BaseDao {
 	 * {@inheritDoc}
 	 * @see \app\base\BaseDao::tableName()
 	 */
-	protected function tableName() : string {
+	protected function tableName() {
 		return self::TABLE_NAME;
 	}
 	
@@ -35,7 +35,7 @@ class College extends BaseDao {
 	 * @param Pagination $pagination
 	 * @return array
 	 */
-	public function pageColleges(Pagination $pagination) : array {
+	public function pageColleges(Pagination $pagination) {
 		return $this->createQuery()
 			->select(['c.id', 'c.name', 'c.detail_address', 'r1.name as province_name', 'r2.name as city_name', 'r3.name as region_name'])
 			->from($this->tableName().' c')
@@ -53,7 +53,7 @@ class College extends BaseDao {
 	 * @param int $id
 	 * @return bool
 	 */
-	public function existsNameWithoutId(string $name, int $id) : bool {
+	public function existsNameWithoutId($name, $id) {
 		return $this->createQuery()
 			->from($this->tableName())
 			->where('name=:name and id<>:id', [':name' => $name, ':id' => $id])

@@ -12,7 +12,7 @@ class LoginController extends BaseWebController {
 	 * 管理员登录Action
 	 * @return string
 	 */
-	public function actionIndex() : string {
+	public function actionIndex() {
 		$cmsAdminForm = new CmsAdminForm();
 		$cmsAdminForm->setScenario('login');
 		if (\Yii::$app->request->getIsPost()) {

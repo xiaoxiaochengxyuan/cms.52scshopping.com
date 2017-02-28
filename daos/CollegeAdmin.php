@@ -18,7 +18,7 @@ class CollegeAdmin extends BaseDao {
 	 * {@inheritDoc}
 	 * @see \app\base\BaseDao::tableName()
 	 */
-	protected function tableName() : string {
+	protected function tableName() {
 		return self::TABLE_NAME;
 	}
 	
@@ -27,7 +27,7 @@ class CollegeAdmin extends BaseDao {
 	 * @param string $className
 	 * @return CollegeAdmin
 	 */
-	public static function instance(string $className = __CLASS__) {
+	public static function instance($className = __CLASS__) {
 		return parent::instance($className);
 	}
 	
@@ -35,7 +35,7 @@ class CollegeAdmin extends BaseDao {
 	 * {@inheritDoc}
 	 * @see \app\base\BaseDao::insert()
 	 */
-	public function insert(array $data) : int {
+	public function insert($data) {
 		if (!isset($data['salt'])) {
 			$data['salt'] = \Yii::$app->getSecurity()->generateRandomString(8);
 		}
@@ -51,7 +51,7 @@ class CollegeAdmin extends BaseDao {
 	 * @param int $id
 	 * @return int
 	 */
-	public function resetPassword(int $id) : int {
+	public function resetPassword($id) {
 		$salt = \Yii::$app->getSecurity()->generateRandomString(8);
 		$password = '0123456789';
 		$data = [

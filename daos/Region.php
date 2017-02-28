@@ -15,7 +15,7 @@ class Region extends BaseDao {
 	 * {@inheritDoc}
 	 * @see \app\base\BaseDao::tableName()
 	 */
-	protected function tableName() : string {
+	protected function tableName() {
 		return self::TALBE_NAME;
 	}
 	
@@ -32,7 +32,7 @@ class Region extends BaseDao {
 	 * 获取省的下拉列表数据
 	 * @return array
 	 */
-	public function provinceDroplistData() : array {
+	public function provinceDroplistData() {
 		$provinces = $this->listByColumn('pid', 1, ['id', 'name']);
 		$result = [];
 		foreach ($provinces as $province) {
@@ -46,7 +46,7 @@ class Region extends BaseDao {
 	 * @param int $provinceId
 	 * @return array
 	 */
-	public function droplistData(int $provinceId) : array {
+	public function droplistData($provinceId) {
 		$data = $this->listByColumn('pid', $provinceId, ['id', 'name']);
 		$result = [];
 		if ($provinceId == 0) {

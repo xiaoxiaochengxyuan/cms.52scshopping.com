@@ -71,7 +71,11 @@ function deleteProductCat(id) {
 		$.get("<?=Yii::$app->urlManager->createUrl(['/product-cat/delete'])?>", {
 			"id" : id
 		}, function(response) {
-			window.location.reload();
+			if(response.code == <?=ERROR_CODE_NONE?>) {
+				window.location.reload();
+			} else {
+				alert(response.msg);
+			}
 		});
 	}
 }
