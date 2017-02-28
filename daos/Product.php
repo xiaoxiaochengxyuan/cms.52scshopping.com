@@ -35,8 +35,27 @@ class Product extends BaseDao {
 	 * @param array $search 查询条件
 	 * @return int
 	 */
-	public function countBySearch($search) {
-		$condition = [];
+	public function countBySearch(array $search) {
+		$condition = ['and'];
+		if (!empty($search['name'])) {
+			$condition[] = ['like', 'name', $search['name']];
+		}
+		if ($search['grounding'] != -1) {
+			$condition[] = "grounding={$search['grounding']}";
+		}
+		if ($search['stock_price_min'] !== '') {
+			$condition[] = "stock_price_min>={$search['stock_price_min']}";
+		}
+		if ($search['stock_price_max'] !== '') {
+			$condition[] = "stock_price_max<={$search['stock_price_max']}";
+		}
+		if ($search['top_cat_id'] !== '') {
+			$condition[] = "top_cat_id={$search['top_cat_id']}";
+		}
+		if ($search['cat_id'] !== '') {
+			$condition[] = "cat_id={$search['cat_id']}";
+		}
+		
 		return $this->createQuery()
 			->from($this->tableName())
 			->where($condition)
@@ -51,7 +70,25 @@ class Product extends BaseDao {
 	 * @return array 返回数据 
 	 */
 	public function pageBySearch($search, Pagination $pagination) {
-		$condition = [];
+		$condition = ['and'];
+		if (!empty($search['name'])) {
+			$condition[] = ['like', 'p.name', $search['name']];
+		}
+		if ($search['grounding'] != -1) {
+			$condition[] = "p.grounding={$search['grounding']}";
+		}
+		if ($search['stock_price_min'] !== '') {
+			$condition[] = "p.stock_price_min>={$search['stock_price_min']}";
+		}
+		if ($search['stock_price_max'] !== '') {
+			$condition[] = "p.stock_price_max<={$search['stock_price_max']}";
+		}
+		if ($search['top_cat_id'] != 0) {
+			$condition[] = "p.top_cat_id={$search['top_cat_id']}";
+		}
+		if ($search['cat_id'] != 0) {
+			$condition[] = "p.cat_id={$search['cat_id']}";
+		}
 		return $this->createQuery()
 			->select(['p.id', 'p.name', 'p.stock_price', 'p.price', 'p.number', 'p.create_place', 'p.title_img', 'p.warn_number', 'p.show_buy_number', 'p.grounding', 'tpc.name as tpc_name', 'pc.name as pc_name'])
 			->from($this->tableName().' p')

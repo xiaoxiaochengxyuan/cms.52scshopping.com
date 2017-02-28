@@ -24,7 +24,7 @@ class Region extends BaseDao {
 	 * @param string $className
 	 * @return Region
 	 */
-	public static function instance(string $className = __CLASS__) {
+	public static function instance($className = __CLASS__) {
 		return parent::instance($className);
 	}
 	

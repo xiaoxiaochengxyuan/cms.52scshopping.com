@@ -92,6 +92,10 @@ class ProductCatController extends BaseWebController {
 	 */
 	public function actionSecondCatDropList() {
 		$pid = \Yii::$app->request->get('pid');
+		$pid = intval($pid);
+		if (empty($pid)) {
+			return '';
+		}
 		$productCats = ProductCat::instance()->dropListData($pid);
 		return $this->renderPartial('second-cat-drop-list', ['productCats' => $productCats]);
 	}

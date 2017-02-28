@@ -58,7 +58,7 @@ class ProductController extends BaseWebController {
 	public function actionIndex() {
 		$defaultSearch = [
 			'name' => '',
-			'grounding' => '',
+			'grounding' => -1,
 			'stock_price_min' => '',
 			'stock_price_max' => '',
 			'top_cat_id' => '',
@@ -70,10 +70,26 @@ class ProductController extends BaseWebController {
 		$pagionation->pageSize = 20;
 		$products = Product::instance()->pageBySearch($search, $pagionation);
 		//获取顶级分类
+		$tmpTopProductCats = ['--请选择--'];
 		$topProductCats = ProductCat::instance()->dropListData(0);
+		foreach ($topProductCats as $key => $topProductCat) {
+			$tmpTopProductCats[$key] = $topProductCat;
+		}
+		$topProductCats = $tmpTopProductCats;
+		
 		//获取顶级分类下面的二级分类
-		$topCatId = empty($search['top_cat_id']) ? array_keys($topProductCats)[0] : $search['top_cat_id'];
-		$productCats = ProductCat::instance()->dropListData($topCatId);
+		$topCatId = empty($search['top_cat_id']) ? 0 : $search['top_cat_id'];
+		if (empty($topCatId)) {
+			$tmpProductCat = ['--请选择--'];
+			$productCats = ProductCat::instance()->dropListData($topCatId);
+			foreach ($productCats as $key => $productCat) {
+				$tmpProductCat[$key] = $productCat;
+			}
+			$productCats = $tmpProductCat;
+		} else {
+			$productCats = ['--请选择--'];
+		}
+		
 		$this->view->title = '商品列表页';
 		return $this->render('index', [
 			'products' => $products,

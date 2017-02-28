@@ -94,7 +94,7 @@ use yii\helpers\Html;
                                                     
                                                     <label class="block clearfix">
                                                         <span class="block input-icon input-icon-right">
-                                                            <?=Html::passwordInput('CmsAdminForm[verifyCode]', $cmsAdminForm->verifyCode, ['placeholder' => '验证码', 'class' => 'form-control'])?>
+                                                            <?=Html::textInput('CmsAdminForm[verifyCode]', $cmsAdminForm->verifyCode, ['placeholder' => '验证码', 'class' => 'form-control'])?>
                                                             <i class="icon-lock"></i>
                                                         </span>
                                                     </label>
