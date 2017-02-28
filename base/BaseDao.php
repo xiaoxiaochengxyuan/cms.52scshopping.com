@@ -139,6 +139,15 @@ abstract class BaseDao {
 	}
 	
 	/**
+	 * 修改全表数据
+	 * @param array $data 要修改的数据
+	 * @return number
+	 */
+	public function updateAll($data) {
+		return self::db()->createCommand()->update($this->tableName(), $data)->execute();
+	}
+	
+	/**
 	 * 删除一条数据
 	 * @param int $id 要删除的数据的Id
 	 * @return int 影响的行数
