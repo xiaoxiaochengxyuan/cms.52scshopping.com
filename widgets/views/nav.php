@@ -51,4 +51,13 @@ function activeLi($controllerId, $actionId = null) {
 			</a>
 		</li>
 	<?php endif;?>
+	
+	<?php if (CmsAdmin::hasPremiss('webinfo', 'index')):?>
+		<li <?=activeLi('webinfo')?>>
+			<a href="<?=Yii::$app->urlManager->createUrl('/webinfo')?>">
+				<i class="icon-heart"></i>
+				<span class="menu-text"> 网站基本信息 </span>
+			</a>
+		</li>
+	<?php endif;?>
 </ul>

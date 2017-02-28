@@ -26,6 +26,7 @@ function changeTopCatId(obj) {
 	$.get("<?=Yii::$app->urlManager->createUrl("/product-cat/second-cat-drop-list")?>", {
 		'pid' : topCatId
 	}, function(response) {
+		response = "<option value='0'>--请选择--</option>" + response;
 		$("#catIdSelect").html(response);
 	});
 }
@@ -60,7 +61,7 @@ function changeTopCatId(obj) {
 	<div class="page-header">
 		<?php $form=ActiveForm::begin(['method' => 'get'])?>
 			名称：<?=Html::textInput('search[name]', $search['name'])?>&nbsp;
-			是否上架：<?=Html::dropDownList('search[grounding]', $search['grounding'], ['否', '是'])?>&nbsp;
+			是否上架：<?=Html::dropDownList('search[grounding]', $search['grounding'], [-1 => '--请选择--', '否', '是'])?>&nbsp;
 			进价范围：<?=Html::textInput('search[stock_price_min]', $search['stock_price_min'], ['style' => 'width:70px;'])?> - <?=Html::textInput('search[stock_price_max]', $search['stock_price_max'], ['style' => 'width:70px;'])?>&nbsp;
 			对应分类：<?=Html::dropDownList('search[top_cat_id]', $search['top_cat_id'], $topProductCats, ['onchange' => 'changeTopCatId(this)'])?>
 					 <?=Html::dropDownList('search[cat_id]', $search['cat_id'], $productCats, ['id' => 'catIdSelect'])?>&nbsp;
