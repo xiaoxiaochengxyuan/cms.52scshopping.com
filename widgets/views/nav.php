@@ -60,4 +60,14 @@ function activeLi($controllerId, $actionId = null) {
 			</a>
 		</li>
 	<?php endif;?>
+	
+	
+	<?php if (CmsAdmin::hasPremiss('message', 'index')):?>
+		<li <?=activeLi('message')?>>
+			<a href="<?=Yii::$app->urlManager->createUrl('/message')?>">
+				<i class="icon-envelope-alt"></i>
+				<span class="menu-text"> 消息列表 </span>
+			</a>
+		</li>
+	<?php endif;?>
 </ul>

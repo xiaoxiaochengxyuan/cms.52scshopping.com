@@ -37,7 +37,7 @@ class College extends BaseDao {
 	 */
 	public function pageColleges(Pagination $pagination) {
 		return $this->createQuery()
-			->select(['c.id', 'c.name', 'c.detail_address', 'r1.name as province_name', 'r2.name as city_name', 'r3.name as region_name'])
+			->select(['c.id', 'c.name', 'c.detail_address', 'c.has_init_product', 'r1.name as province_name', 'r2.name as city_name', 'r3.name as region_name'])
 			->from($this->tableName().' c')
 			->leftJoin(Region::TALBE_NAME.' r1', 'r1.id=c.province_id')
 			->leftJoin(Region::TALBE_NAME.' r2', 'r2.id=c.city_id')

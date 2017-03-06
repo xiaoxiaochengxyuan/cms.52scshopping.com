@@ -6,6 +6,7 @@ use app\utils\OssUtil;
 ?>
 <!-- 引入uploadify -->
 <?=$this->render('/includes/uploadify')?>
+<!-- 引入kindeditor -->
 <?=$this->render('/includes/kindeditor')?>
 
 <script type="text/javascript">

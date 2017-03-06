@@ -1,6 +1,7 @@
 <?php
 namespace app\base;
 use yii\web\Controller;
+use yii\web\Response;
 /**
  * 所以Controller的基类
  * @author xiawei
@@ -83,5 +84,28 @@ abstract class BaseWebController extends Controller {
 			$this->view->params['err'] = [];
 		}
 		$this->view->params['err'][] = $msg;
+	}
+	
+	
+	/**
+	 * 成功返回信息
+	 * @return string[]
+	 */
+	protected function ajaxSuccReturn($msg = '操作成功') {
+		$result = ['code' => ERROR_CODE_NONE, 'msg' => $msg];
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		return $result;
+	}
+	
+	/**
+	 * 错误的返回信息
+	 * @param integer $code 错误代码
+	 * @param string $msg 错误信息
+	 * @return array
+	 */
+	protected function ajaxErrReturn($code, $msg) {
+		$result = ['code' => $code, 'msg' => $msg];
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		return $result;
 	}
 }

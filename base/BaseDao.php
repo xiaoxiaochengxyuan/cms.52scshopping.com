@@ -353,4 +353,35 @@ abstract class BaseDao {
 			->where("{$this->primaryKey()}=:{$this->primaryKey()}", [":{$this->primaryKey()}" => $id])
 			->scalar(self::db());
 	}
+	
+	/**
+	 * 根据条件查询数据
+	 * @param string $select 搜索字段
+	 * @param array $condition 查询条件
+	 * @return array
+	 */
+	public function listByCondition($select = '*', array $condition = []) {
+		return $this->createQuery()
+			->select($select)
+			->from($this->tableName())
+			->where($condition)
+			->all(self::db());
+	}
+	
+	/**
+	 * 按条件分页获取数据
+	 * @param Pagination $pagination 分页组件
+	 * @param string $select 查询字段
+	 * @param array $condition 查询条件
+	 * @return array
+	 */
+	public function pageByCondition(Pagination $pagination, $select = '*', array $condition = []) {
+		return $this->createQuery()
+			->select($select)
+			->from($this->tableName())
+			->where($condition)
+			->offset($pagination->getOffset())
+			->limit($pagination->getLimit())
+			->all(self::db());
+	}
 }

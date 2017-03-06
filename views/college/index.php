@@ -1,6 +1,21 @@
 <?php
 use yii\widgets\LinkPager;
 ?>
+<script type="text/javascript">
+function initCollegeProduct(collegeId) {
+	if(confirm("您真的要初始化该大学的产品吗？")) {
+		$.get("<?=Yii::$app->getUrlManager()->createUrl(['/college/init-product'])?>", {
+			'collegeId' : collegeId
+		}, function(response) {
+			if(response.code != <?=ERROR_CODE_NONE?>) {
+				alert(response.msg);
+			} else {
+				window.location.reload();
+			}
+		});
+	}
+}
+</script>
 <div class="breadcrumbs" id="breadcrumbs">
 	<script type="text/javascript">
 		try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
@@ -45,8 +60,11 @@ use yii\widgets\LinkPager;
 							<td><?=$college['name']?></td>
 							<td><?=$college['province_name']?>、<?=$college['city_name']?>、<?=$college['region_name']?>、<?=$college['detail_address']?></td>
 							<td>
-								<a href="<?=Yii::$app->urlManager->createUrl(['/college/update', 'id' => $college['id']])?>" class="btn btn-xs btn-info">修改</a>&nbsp;&nbsp;
+								<a href="<?=Yii::$app->urlManager->createUrl(['/college/update', 'id' => $college['id']])?>" class="btn btn-xs btn-info">修改</a>
 								<a href="<?=Yii::$app->urlManager->createUrl(['/college-admin/index', 'college_id' => $college['id']])?>" class="btn btn-xs btn-success">管理员列表</a>
+								<?php if ($college['has_init_product'] == 0):?>
+									<button class="btn btn-xs btn-warning" onclick="initCollegeProduct(<?=$college['id']?>)">初始化商品</button>
+								<?php endif;?>
 							</td>
 						</tr>
 					<?php endforeach;?>
