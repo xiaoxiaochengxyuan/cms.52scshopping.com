@@ -203,19 +203,19 @@ function chgNeedSend(obj) {
 					</div>
 				</div>
 				
-				
-				<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 初始商品库存： </label>
-					<div class="col-sm-6">
-						<?=Html::textInput('ProductForm[number]', $productForm->number, ['class' => 'form-control'])?>
+				<?php if (empty($productForm->options)):?>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品库存： </label>
+						<div class="col-sm-6">
+							<?=Html::textInput('ProductForm[number]', $productForm->number, ['class' => 'form-control'])?>
+						</div>
+						<div class="col-sm-3">
+							<?php if ($productForm->hasErrors('number')):?>
+								<span class="block error"><?=Html::error($productForm, 'number')?></span>
+							<?php endif;?>
+						</div>
 					</div>
-					<div class="col-sm-3">
-						<?php if ($productForm->hasErrors('number')):?>
-							<span class="block error"><?=Html::error($productForm, 'number')?></span>
-						<?php endif;?>
-					</div>
-				</div>
-				
+				<?php endif;?>
 				
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 初始显示购买量： </label>
@@ -251,19 +251,6 @@ function chgNeedSend(obj) {
 					<div class="col-sm-3">
 						<?php if ($productForm->hasErrors('parameters')):?>
 							<span class="block error"><?=Html::error($productForm, 'options')?></span>
-						<?php endif;?>
-					</div>
-				</div>
-				
-				
-				<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 产地： </label>
-					<div class="col-sm-6">
-						<?=Html::textInput('ProductForm[create_place]', $productForm->create_place, ['class' => 'form-control'])?>
-					</div>
-					<div class="col-sm-3">
-						<?php if ($productForm->hasErrors('create_place')):?>
-							<span class="block error"><?=Html::error($productForm, 'create_place')?></span>
 						<?php endif;?>
 					</div>
 				</div>

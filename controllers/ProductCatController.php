@@ -57,7 +57,7 @@ class ProductCatController extends BaseWebController {
 			if (ProductCat::instance()->existsByColumn('pid', $id)) {
 				$result = ['code' => ERROR_CODE_CANNOT_DELETE, 'msg' => '有子分类不能删除'];
 			} elseif (Product::instance()->existsByColumn('cat_id', $id)) {
-				$result = ['code' => ERROR_CODE_CANNOT_DELETE, 'msg' => '有子分类不能删除'];
+				$result = ['code' => ERROR_CODE_CANNOT_DELETE, 'msg' => '该分类下有商品不能删除'];
 			} elseif (!ProductCat::instance()->delete($id)) {
 				$result = ['code' => ERROR_CODE_OPTION_FAILED, 'msg' => '删除分类失败'];
 			}

@@ -51,6 +51,7 @@ abstract class BaseWebController extends Controller {
 		defined('KINDEDITOR_LANG_STATIC_URL') or define('KINDEDITOR_LANG_STATIC_URL', KINDEDITOR_STATIC_URL.'/lang');
 		defined('KINDEDITOR_PLUGINS_STATIC_URL') or define('KINDEDITOR_PLUGINS_STATIC_URL', KINDEDITOR_STATIC_URL.'/plugins');
 		defined('KINDEDITOR_THEMES_STATIC_URL') or define('KINDEDITOR_THEMES_STATIC_URL', KINDEDITOR_STATIC_URL.'/themes');
+		defined('JS_COLOR_STATIC_URL') or define('JS_COLOR_STATIC_URL', STATIC_URL.'/js-color');
 	}
 	
 	/**

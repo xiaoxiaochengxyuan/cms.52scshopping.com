@@ -52,7 +52,7 @@ class ProductCat extends BaseDao {
 	 */
 	public function getIndexData($pid) {
 		return $this->createQuery()
-			->select(['pc.id', 'pc.name', 'pc.en_name', 'ppc.name as ppc_name'])
+			->select(['pc.id', 'pc.name', 'pc.en_name', 'ppc.name as ppc_name', 'pc.icon', 'pc.pid', 'pc.icon_bgcolor'])
 			->from($this->tableName().' pc')
 			->leftJoin($this->tableName().' ppc', 'pc.pid=ppc.id')
 			->where('pc.pid=:pid', [':pid' => $pid])

@@ -31,6 +31,18 @@ class ProductCatForm extends Model {
 	public $pid = 0;
 	
 	/**
+	 * 对应的小图标
+	 * @var string
+	 */
+	public $icon = null;
+	
+	/**
+	 * 小图标背景颜色
+	 * @var string
+	 */
+	public $icon_bgcolor = null;
+	
+	/**
 	 * {@inheritDoc}
 	 * @see \yii\base\Model::rules()
 	 */
@@ -38,7 +50,9 @@ class ProductCatForm extends Model {
 		return [
 			['name', 'checkName', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['en_name', 'checkEnName', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
-			['pid', 'checkPid', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
+			['pid', 'checkPid', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['icon', 'checkIcon', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['icon_bgcolor', 'checkIconBgcolr', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
 		];
 	}
 	
@@ -82,6 +96,24 @@ class ProductCatForm extends Model {
 			} elseif ($productCat['pid'] != 0) {
 				$this->addError('pid', '对应的顶级分类错误');
 			}
+		}
+	}
+	
+	/**
+	 * 检查小图标
+	 */
+	public function checkIcon() {
+		if ($this->pid == 0 && empty($this->icon)) {
+			$this->addError('icon', '分类小图标必须上传');
+		}
+	}
+	
+	/**
+	 * 检查小图标背景颜色
+	 */
+	public function checkIconBgcolr() {
+		if ($this->pid == 0 && empty($this->icon_bgcolor)) {
+			$this->addError('icon', '分类小图标背景颜色必须选择');
 		}
 	}
 }

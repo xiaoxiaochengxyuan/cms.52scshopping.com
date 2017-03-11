@@ -17,5 +17,7 @@ return [
         'endpoint' => 'http://oss-cn-shenzhen.aliyuncs.com',
         'bluckName' => 'scshopping-test',
         'oss_base_url' => 'http://scshopping-test.oss-cn-shenzhen.aliyuncs.com'
-    ]
+    ],
+	//前端手机端网页的域名
+	'mobile_domin' => 'dev.m.idaxuebao.com'
 ];

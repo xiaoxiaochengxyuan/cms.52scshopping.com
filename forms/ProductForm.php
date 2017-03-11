@@ -27,7 +27,7 @@ class ProductForm extends Model {
 	public $price = 0;
 	
 	/**
-	 * 初始的商品库存
+	 * 商品库存
 	 * @var integer
 	 */
 	public $number = 0;
@@ -52,13 +52,6 @@ class ProductForm extends Model {
 	 * @var string
 	 */
 	public $desc = null;
-	
-	
-	/**
-	 * 产地
-	 * @var string
-	 */
-	public $create_place = null;
 	
 	
 	/**
@@ -132,7 +125,6 @@ class ProductForm extends Model {
 			['show_buy_number', 'checkShowBuyNumber', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['parameters', 'checkParamters', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['desc', 'required', 'on' => ['add', 'update'], 'message' => '商品详情不能为空'],
-			['create_place', 'required', 'on' => ['add', 'update'], 'message' => '商品产地不能为空'],
 			['title_img', 'required', 'on' => ['add', 'update'], 'message' => '标题图片不正确'],
 			['list_imgs', 'checkListImg', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['top_cat_id', 'checkTopCatId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
@@ -167,7 +159,7 @@ class ProductForm extends Model {
 	 * 检查商品库存
 	 */
 	public function checkNumber() {
-		if (!CommonUtil::isPlusNumber($this->number)) {
+		if (!empty($this->options) && !CommonUtil::isPlusNumber($this->number)) {
 			$this->addError('number', '商品库存必须是一个正数');
 		}
 	}

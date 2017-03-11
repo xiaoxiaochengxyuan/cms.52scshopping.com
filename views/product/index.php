@@ -30,6 +30,21 @@ function changeTopCatId(obj) {
 		$("#catIdSelect").html(response);
 	});
 }
+
+
+function deleteProduct(id, productName) {
+	if(confirm("请问您真的要删除产品“" + productName + "”吗？删除之后数据不可恢复")) {
+		$.get("<?=Yii::$app->getUrlManager()->createUrl(['/product/delete'])?>", {
+			"id" : id
+		}, function(response) {
+			if(response.code == <?=ERROR_CODE_NONE?>) {
+				window.location.reload();
+			} else {
+				alert(response.msg);
+			}
+		});
+	}
+}
 </script>
 
 <div class="breadcrumbs" id="breadcrumbs">
@@ -80,9 +95,8 @@ function changeTopCatId(obj) {
 						<th>进价</th>
 						<th>卖价</th>
 						<th>是否上架</th>
-						<th>初始库存</th>
+						<th>库存</th>
 						<th>初始显示购买人数</th>
-						<th>生产地</th>
 						<th>标题图片</th>
 						<th>对应顶级分类</th>
 						<th>对应分类</th>
@@ -98,9 +112,8 @@ function changeTopCatId(obj) {
 							<td><?=$product['stock_price']?>元</td>
 							<td><?=$product['price']?>元</td>
 							<td><?=$product['grounding'] == 1 ? '是' : '否'?></td>
-							<td><?=$product['number']?></td>
+							<td><?=$product['number']?>件</td>
 							<td><?=$product['show_buy_number']?></td>
-							<td><?=$product['create_place']?></td>
 							<td><?=Html::img(OssUtil::getOssImg($product['title_img']), ['style' => 'width:150px;'])?></td>
 							<td><?=$product['tpc_name']?></td>
 							<td><?=$product['pc_name']?></td>
@@ -109,7 +122,12 @@ function changeTopCatId(obj) {
 								<button class="btn <?=$product['grounding'] == 1 ? 'btn-warning' : 'btn-success'?> btn-xs" onclick="changeGrounding(<?=$product['id']?>, '<?=$product['grounding'] == 1 ? '下架' : '上架'?>')">
 									<?=$product['grounding'] == 1 ? '下架' : '上架'?>
 								</button>
-								<a href="<?=Yii::$app->urlManager->createUrl(['/product/update', 'id' => $product['id']])?>" class="btn btn-xs btn-info">修改</a>
+								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product/update', 'id' => $product['id']])?>" class="btn btn-xs btn-info">修改</a>
+								<button class="btn btn-xs btn-danger" onclick="deleteProduct(<?=$product['id']?>, '<?=$product['name']?>')">删除</button>
+								<a target="_blank" href="http://<?=Yii::$app->params['mobile_domin']?>/product/<?=$product['id']?>/preview.html" class="btn btn-xs btn-warning">浏览</a>
+								<?php if (!empty($product['options'])):?>
+									<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product/stock', 'id' => $product['id']])?>" class="btn btn-xs btn-purple">库存管理</a>
+								<?php endif;?>
 							</td>
 						</tr>
 					<?php endforeach;?>

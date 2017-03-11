@@ -7,6 +7,8 @@ use yii\helpers\Json;
 use app\daos\Product;
 use yii\data\Pagination;
 use yii\web\Response;
+use app\daos\ProductStock;
+use app\utils\CommonUtil;
 /**
  * 商品对应的Controller
  * @author xiawei
@@ -43,8 +45,9 @@ class ProductController extends BaseWebController {
 			$optionArr = explode("\n", $options);
 			$tmpOptionArr = [];
 			foreach ($optionArr as $option) {
-				$oArr = explode(':', $option);
-				$tmpOptionArr[] = ['name' => $oArr[0], 'value' => explode(',', $oArr[1])];
+				$option = explode(':', $option);
+				$optionArr = ['name' => $option[0], 'value' => explode(',', $option[1])];
+				$tmpOptionArr[] = $optionArr;
 			}
 			$post['options'] = $tmpOptionArr;
 		} else {
@@ -69,6 +72,7 @@ class ProductController extends BaseWebController {
 		$pagionation->totalCount = Product::instance()->countBySearch($search);
 		$pagionation->pageSize = 20;
 		$products = Product::instance()->pageBySearch($search, $pagionation);
+		$this->initProductNum($products);
 		//获取顶级分类
 		$tmpTopProductCats = ['--请选择--'];
 		$topProductCats = ProductCat::instance()->dropListData(0);
@@ -98,6 +102,16 @@ class ProductController extends BaseWebController {
 			'topProductCats' => $topProductCats,
 			'productCats' => $productCats
 		]);
+	}
+	
+	/**
+	 * 初始化商品的库存
+	 * @param array $products
+	 */
+	public function initProductNum(&$products) {
+		foreach ($products as &$product) {
+			$product['number'] = Product::instance()->getProductNum($product['id']);
+		}
 	}
 	
 	/**
@@ -137,7 +151,6 @@ class ProductController extends BaseWebController {
 			$productForm->parameters = '';
 		}
 		
-		
 		//把选项转化字符串
 		if (!empty($productForm->options)) {
 			$options = '';
@@ -171,18 +184,21 @@ class ProductController extends BaseWebController {
 		$productForm = new ProductForm();
 		$productForm->setScenario('add');
 		if (\Yii::$app->request->getIsPost()) {
-			$post = \Yii::$app->request->post('ProductForm');
-			$this->beforeSave($post);
-			$productForm->setAttributes($post, false);
-			if ($productForm->validate()) {
-				$post['parameters'] = Json::encode($post['parameters']);
-				$post['options'] = Json::encode($post['options']);
-				$post['list_imgs'] = Json::encode($post['list_imgs']);
-				if (Product::instance()->insert($post)) {
-					$this->redirect(['/product']);
+			try {
+				$post = \Yii::$app->request->post('ProductForm');
+				$this->beforeSave($post);
+				$productForm->setAttributes($post, false);
+				if ($productForm->validate()) {
+					$post['parameters'] = Json::encode($post['parameters']);
+					$post['options'] = Json::encode($post['options']);
+					$post['list_imgs'] = Json::encode($post['list_imgs']);
+					if (Product::instance()->insert($post)) {
+						$this->redirect(['/product']);
+					}
 				}
+			} catch (\Exception $e) {
+				$this->addErrMsg('商品参数或者选项错误!');
 			}
-			
 		}
 		
 		//首先把对应的选项和params转化成字符串
@@ -237,5 +253,60 @@ class ProductController extends BaseWebController {
 		}
 		\Yii::$app->response->format = Response::FORMAT_JSON;
 		return $result;
+	}
+	
+	/**
+	 * 删除商品
+	 */
+	public function actionDelete() {
+		$id = \Yii::$app->getRequest()->get('id');
+		if (Product::instance()->existsByPrimaryKey($id)) {
+			if (Product::instance()->delete($id)) {
+				return $this->ajaxSuccReturn('删除商品成功');
+			} else {
+				return $this->ajaxErrReturn(ERROR_CODE_OPTION_FAILED, '删除商品失败');
+			}
+		} else {
+			return $this->ajaxErrReturn(ERROR_CODE_CANNOT_DELETE, '该商品已经被删除');
+		}
+	}
+	
+	/**
+	 * 商品库存管理
+	 * @return string
+	 */
+	public function actionStock() {
+		$id = \Yii::$app->getRequest()->get('id');
+		$errors = [];
+		if (\Yii::$app->getRequest()->getIsPost()) {
+			$post = \Yii::$app->getRequest()->post('ProductStock');
+			foreach ($post as $key => $value) {
+				if (!(is_numeric($value) && $value >= 0)) {
+					$errors[$key] = '商品库存错误';
+				}
+			}
+			if (empty($errors)) {
+				$transaction = Product::db()->beginTransaction();
+				$flag = true;
+				foreach ($post as $key => $v) {
+					if (!ProductStock::instance()->plusNum($key, $v)) {
+						$flag = false;
+						break;
+					}
+				}
+				if ($flag) {
+					$transaction->commit();
+					$this->addSuccMsg('修改商品库存成功');
+				} else {
+					$transaction->rollBack();
+					$this->addErrMsg('修改商品库存失败');
+				}
+			}
+		} else {
+			$post = [];
+		}
+		$productStocks = ProductStock::instance()->listByColumn('product_id', $id);
+		$this->view->title = '商品库存管理';
+		return $this->render('stock', ['productStocks' => $productStocks, 'errors' => $errors, 'post' => $post]);
 	}
 }

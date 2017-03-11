@@ -384,4 +384,18 @@ abstract class BaseDao {
 			->limit($pagination->getLimit())
 			->all(self::db());
 	}
+	
+	/**
+	 * 通过条件字段列来获取对应总数
+	 * @param string $columnName 条件字段名
+	 * @param string $columnValue 条件字段列
+	 * @param string $sumColumn 要获取总数的列
+	 * @return mixed|number|boolean|string 获取到的总数
+	 */
+	public function sumByColumn($columnName, $columnValue, $sumColumn) {
+		return $this->createQuery()
+			->from($this->tableName())
+			->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])
+			->sum($sumColumn, self::db());
+	}
 }
