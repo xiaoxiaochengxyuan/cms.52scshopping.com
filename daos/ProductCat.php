@@ -1,11 +1,11 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
+use app\base\Dao;
 /**
  * 商品分类
  * @author xiawei
  */
-class ProductCat extends BaseDao {
+class ProductCat extends Dao {
 	/**
 	 * 表名
 	 * @var string
@@ -14,7 +14,7 @@ class ProductCat extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TABLE_NAME;
@@ -71,6 +71,9 @@ class ProductCat extends BaseDao {
 			->from($this->tableName())
 			->where('pid=:pid', [':pid' => $pid])
 			->all(self::db());
+		if (empty($productCats)) {
+			return ['--请选择--'];
+		}
 		return array_column($productCats, 'name', 'id');
 	}
 	

@@ -1,14 +1,14 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
 use app\utils\StringUtil;
 use yii\helpers\Json;
 use yii\web\Cookie;
+use app\base\Dao;
 /**
  * 内容管理系统管理员
  * @author xiawei
  */
-class CmsAdmin extends BaseDao {
+class CmsAdmin extends Dao {
 	/**
 	 * 表名
 	 * @var string
@@ -19,7 +19,7 @@ class CmsAdmin extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TABLE_NAME;
@@ -36,7 +36,7 @@ class CmsAdmin extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::insert()
+	 * @see \app\base\Dao::insert()
 	 */
 	public function insert($data) {
 		$salt = \Yii::$app->getSecurity()->generateRandomString(8);

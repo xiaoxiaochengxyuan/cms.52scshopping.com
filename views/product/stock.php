@@ -33,9 +33,9 @@ use yii\helpers\Html;
 				<?=AlertMsgWidget::widget(['view' => $this])?>
 				<?php foreach ($productStocks as $productStock):?>
 					<div class="form-group">
-						<label class="col-sm-4 control-label no-padding-right" for="form-field-1"><?=$productStock['options']?>（<?=$productStock['num']?>件）：</label>
+						<label class="col-sm-4 control-label no-padding-right" for="form-field-1"><?=$productStock['options']?>：</label>
 						<div class="col-sm-4">
-							增加&nbsp;<?=Html::textInput('ProductStock['.$productStock['id'].']', 0, ['class' => 'form-control', 'style' => 'display:inline;width:80%;'])?>&nbsp;件
+							<?=Html::textInput('ProductStock['.$productStock['id'].']', $productStock['num'], ['class' => 'form-control', 'style' => 'display:inline;width:60%;'])?>&nbsp;件
 						</div>
 						<div class="col-sm-4">
 							<?php if (isset($errors[$productStock['id']])):?>

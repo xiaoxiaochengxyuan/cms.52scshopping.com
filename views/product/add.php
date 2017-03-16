@@ -190,32 +190,6 @@ function chgNeedSend(obj) {
 					</div>
 				</div>
 				
-				<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 警告数量： </label>
-					<div class="col-sm-6">
-						<?php $options = ['class' => 'form-control', 'disabled' => $productForm->need_send == 0, 'id' => 'warn_number_input'];?>
-						<?=Html::textInput('ProductForm[warn_number]', $productForm->warn_number, $options)?>
-					</div>
-					<div class="col-sm-3">
-						<?php if ($productForm->hasErrors('warn_number')):?>
-							<span class="block error"><?=Html::error($productForm, 'warn_number')?></span>
-						<?php endif;?>
-					</div>
-				</div>
-				
-				
-				<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品库存： </label>
-					<div class="col-sm-6">
-						<?=Html::textInput('ProductForm[number]', $productForm->number, ['class' => 'form-control'])?>
-					</div>
-					<div class="col-sm-3">
-						<?php if ($productForm->hasErrors('number')):?>
-							<span class="block error"><?=Html::error($productForm, 'number')?></span>
-						<?php endif;?>
-					</div>
-				</div>
-				
 				
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 初始显示购买量： </label>
@@ -225,6 +199,19 @@ function chgNeedSend(obj) {
 					<div class="col-sm-3">
 						<?php if ($productForm->hasErrors('show_buy_number')):?>
 							<span class="block error"><?=Html::error($productForm, 'show_buy_number')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 进货URL： </label>
+					<div class="col-sm-6">
+						<?=Html::textInput('ProductForm[purchase_url]', $productForm->purchase_url, ['class' => 'form-control'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('show_buy_number')):?>
+							<span class="block error"><?=Html::error($productForm, 'purchase_url')?></span>
 						<?php endif;?>
 					</div>
 				</div>

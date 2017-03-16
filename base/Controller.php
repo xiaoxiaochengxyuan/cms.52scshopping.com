@@ -1,12 +1,11 @@
 <?php
 namespace app\base;
-use yii\web\Controller;
 use yii\web\Response;
 /**
  * 所以Controller的基类
  * @author xiawei
  */
-abstract class BaseWebController extends Controller {
+abstract class Controller extends \yii\web\Controller {
 	/**
 	 * {@inheritDoc}
 	 * @see \yii\base\Component::behaviors()

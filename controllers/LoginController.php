@@ -1,13 +1,13 @@
 <?php
 namespace app\controllers;
-use app\base\BaseWebController;
 use app\forms\CmsAdminForm;
 use app\daos\CmsAdmin;
+use app\base\Controller;
 /**
  * 管理员登录Controller
  * @author xiawei
  */
-class LoginController extends BaseWebController {
+class LoginController extends Controller {
 	/**
 	 * 管理员登录Action
 	 * @return string

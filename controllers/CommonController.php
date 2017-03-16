@@ -1,6 +1,5 @@
 <?php
 namespace app\controllers;
-use app\base\BaseWebController;
 use app\utils\VerifyUtil;
 use app\daos\Region;
 use yii\web\UploadedFile;
@@ -8,11 +7,12 @@ use app\utils\OssUtil;
 use yii\web\Response;
 use app\utils\CommonUtil;
 use yii\base\Exception;
+use app\base\Controller;
 /**
  * 提供一些公共方法的Controller
  * @author xiawei
  */
-class CommonController extends BaseWebController {
+class CommonController extends Controller {
 	private $noCsrf = ['upload-img', 'editor-upload-img'];
 	/**
 	 * {@inheritDoc}

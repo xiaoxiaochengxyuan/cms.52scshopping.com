@@ -1,13 +1,13 @@
 <?php
 namespace app\controllers;
-use app\base\BaseWebController;
 use app\forms\WebinfoForm;
 use app\daos\Webinfo;
+use app\base\Controller;
 /**
  * 网站基本信息Controller
  * @author xiawei
  */
-class WebinfoController extends BaseWebController {
+class WebinfoController extends Controller {
 	/**
 	 * 网站基本信息
 	 */

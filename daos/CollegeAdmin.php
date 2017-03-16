@@ -1,13 +1,12 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
 use app\utils\StringUtil;
-use Codeception\Lib\Connector\Yii1;
+use app\base\Dao;
 /**
  * 大学管理员Dao
  * @author xiawei
  */
-class CollegeAdmin extends BaseDao {
+class CollegeAdmin extends Dao {
 	/**
 	 * 表名
 	 * @var string
@@ -16,7 +15,7 @@ class CollegeAdmin extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TABLE_NAME;
@@ -33,7 +32,7 @@ class CollegeAdmin extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::insert()
+	 * @see \app\base\Dao::insert()
 	 */
 	public function insert($data) {
 		if (!isset($data['salt'])) {

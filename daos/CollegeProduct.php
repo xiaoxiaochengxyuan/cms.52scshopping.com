@@ -1,11 +1,12 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
+use app\base\Dao;
+
 /**
  * 大学商品Dao
  * @author xiawei
  */
-class CollegeProduct extends BaseDao {
+class CollegeProduct extends Dao {
 	/**
 	 * 表名
 	 * @var string
@@ -14,7 +15,7 @@ class CollegeProduct extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TABLE_NAME;

@@ -1,13 +1,12 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
 use yii\data\Pagination;
-use yii\helpers\Json;
+use app\base\Dao;
 /**
  * 商品对应的Dao
  * @author xiawei
  */
-class Product extends BaseDao {
+class Product extends Dao {
 	/**
 	 * 表名
 	 * @var string
@@ -16,7 +15,7 @@ class Product extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TABLE_NAME;
@@ -91,7 +90,7 @@ class Product extends BaseDao {
 			$condition[] = "p.cat_id={$search['cat_id']}";
 		}
 		return $this->createQuery()
-			->select(['p.id', 'p.name', 'p.stock_price', 'p.price', 'p.number', 'p.title_img', 'p.warn_number', 'p.show_buy_number', 'p.grounding', 'tpc.name as tpc_name', 'pc.name as pc_name', 'p.options'])
+			->select(['p.id', 'p.name', 'p.stock_price', 'p.price', 'p.title_img', 'p.show_buy_number', 'p.grounding', 'tpc.name as tpc_name', 'pc.name as pc_name'])
 			->from($this->tableName().' p')
 			->leftJoin(ProductCat::TABLE_NAME.' tpc', 'tpc.id=p.top_cat_id')
 			->leftJoin(ProductCat::TABLE_NAME.' pc', 'pc.id=p.cat_id')
@@ -101,50 +100,10 @@ class Product extends BaseDao {
 			->all(self::db());
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::insert()
-	 */
-	public function insert($product) {
-		//开启事务
-		$transaction = self::db()->beginTransaction();
-		$flag = true;
-		//插入一个产品
-		if (parent::insert($product)) {
-			if (!empty($product['options'])) {
-				$productId = self::db()->getLastInsertID();
-				//获取对应的options
-				$options = $product['options'];
-				$options = Json::decode($options);
-				//获取options对应的笛卡尔积
-				$combOptions = $this->getCombOptions($options);
-				foreach ($combOptions as $combOption) {
-					$productStock = [
-						'options' => $combOption,
-						'product_id' => $productId,
-						'md5_key' => md5($combOption),
-						'num' => 0
-					];
-					if (!ProductStock::instance()->insert($productStock)) {
-						$flag = false;
-						break;
-					}
-				}
-			}
-		} else {
-			$flag = false;
-		}
-		if ($flag) {
-			$transaction->commit();
-		} else {
-			$transaction->rollBack();
-		}
-		return $flag;
-	}
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::delete()
+	 * @see \app\base\Dao::delete()
 	 */
 	public function delete($id) {
 		//首先获取产品的选项
@@ -160,41 +119,6 @@ class Product extends BaseDao {
 			$transaction->rollBack();
 			return false;
 		}
-	}
-	
-	/**
-	 * 获取商品选项的笛卡尔积
-	 * @param array $options 商品选项
-	 * @return array
-	 */
-	private function getCombOptions($options) {
-		$optionsArr = [];
-		foreach ($options as $option) {
-			$optionsArr[] = $option['value'];
-		}
-		return $this->getCombOptionArr($optionsArr);
-	}
-	
-	private function getCombOptionArr($sets) {
-		// 保存结果
-		$result = [];
-		// 循环遍历集合数据
-		for($i=0,$count=count($sets); $i<$count-1; $i++){
-			if($i==0) {
-				$result = $sets[$i];
-			}
-			// 保存临时数据
-			$tmp = array();
-			// 结果与下一个集合计算笛卡尔积
-			foreach($result as $res){
-				foreach($sets[$i+1] as $set){
-					$tmp[] = $res.','.$set;
-				}
-			}
-			// 将笛卡尔积写入结果
-			$result = $tmp;
-		}
-		return $result;
 	}
 	
 	

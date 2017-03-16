@@ -1,15 +1,15 @@
 <?php
 namespace app\controllers;
-use app\base\BaseWebController;
 use app\forms\ProductCatForm;
 use app\daos\ProductCat;
 use yii\web\Response;
 use app\daos\Product;
+use app\base\Controller;
 /**
  * 商品分类对应的Controller
  * @author xiawei
  */
-class ProductCatController extends BaseWebController {
+class ProductCatController extends Controller {
 	/**
 	 * 商品分类列表页
 	 */

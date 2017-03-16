@@ -25,14 +25,14 @@ use app\widgets\AlertMsgWidget;
 				<i class="icon-double-angle-right"></i>
 				添加管理员
 			</small>
-			<a href="<?=Yii::$app->urlManager->createUrl(['/college-admin/index', 'college_id' => $collegeAdminForm->college_id])?>" class="btn btn-xs btn-warning" style="float: right;">返回</a>
+			<a href="<?=Yii::$app->urlManager->createUrl(['/college-admin', 'college_dorm_area_id' => $collegeAdminForm->college_dorm_area_id])?>" class="btn btn-xs btn-warning" style="float: right;">返回</a>
 		</h1>
 	</div><!-- /.page-header -->
 	<div class="row">
 		<div class="col-xs-12">
 			<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']])?>
 				<?=AlertMsgWidget::widget(['view' => $this])?>
-				<?=Html::hiddenInput('CollegeAdminForm[college_id]', $collegeAdminForm->college_id)?>
+				<?=Html::hiddenInput('CollegeAdminForm[college_dorm_area_id]', $collegeAdminForm->college_dorm_area_id)?>
 				
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 用户名： </label>
@@ -55,6 +55,19 @@ use app\widgets\AlertMsgWidget;
 					<div class="col-sm-3">
 						<?php if ($collegeAdminForm->hasErrors('phone')):?>
 							<span class="error"><?=Html::error($collegeAdminForm, 'phone')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否是超级管理员： </label>
+					<div class="col-sm-6">
+						<?=Html::dropDownList('CollegeAdminForm[is_super]', $collegeAdminForm->is_super, ['否', '是'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($collegeAdminForm->hasErrors('is_super')):?>
+							<span class="error"><?=Html::error($collegeAdminForm, 'is_super')?></span>
 						<?php endif;?>
 					</div>
 				</div>

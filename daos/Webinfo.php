@@ -1,11 +1,11 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
+use app\base\Dao;
 /**
  * 网站基本信息
  * @author xiawei
  */
-class Webinfo extends BaseDao {
+class Webinfo extends Dao {
 	/**
 	 * 表名
 	 * @var string
@@ -14,7 +14,7 @@ class Webinfo extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TABLE_NAME;

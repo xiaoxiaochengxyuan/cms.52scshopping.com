@@ -6,13 +6,26 @@ $currentControllerId = $controllerId;
 $currentActionId = $actionId;
 function activeLi($controllerId, $actionId = null) {
 	global $currentControllerId,$currentActionId;
-	if ($controllerId == $currentControllerId) {
-		if (!empty($actionId)) {
-			if ($actionId != $currentActionId) {
-				return '';
+	if (is_string($controllerId)) {
+		if ($controllerId == $currentControllerId) {
+			if (!empty($actionId)) {
+				if ($actionId != $currentActionId) {
+					return '';
+				}
+			}
+			return 'class="active"';
+		}
+	} elseif (is_array($controllerId)) {
+		foreach ($controllerId as $cid) {
+			if ($cid == $currentControllerId) {
+				if (!empty($actionId)) {
+					if ($actionId != $currentActionId) {
+						return '';
+					}
+				}
+				return 'class="active"';
 			}
 		}
-		return 'class="active"';
 	}
 	return '';
 }
@@ -26,7 +39,7 @@ function activeLi($controllerId, $actionId = null) {
 	</li>
 	
 	<?php if (CmsAdmin::hasPremiss('college', 'index')):?>
-		<li <?=activeLi('college')?>>
+		<li <?=activeLi(['college', 'college-dorm-area', 'college-admin'])?>>
 			<a href="<?=Yii::$app->urlManager->createUrl('/college')?>">
 				<i class="icon-bookmark"></i>
 				<span class="menu-text"> 学校管理 </span>
@@ -44,7 +57,7 @@ function activeLi($controllerId, $actionId = null) {
 	<?php endif;?>
 	
 	<?php if (CmsAdmin::hasPremiss('product', 'index')):?>
-		<li <?=activeLi('product')?>>
+		<li <?=activeLi(['product', 'product-stock'])?>>
 			<a href="<?=Yii::$app->urlManager->createUrl('/product')?>">
 				<i class="icon-gift"></i>
 				<span class="menu-text"> 商品管理 </span>

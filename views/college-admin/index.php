@@ -11,6 +11,7 @@ use yii\widgets\LinkPager;
 			<i class="icon-home home-icon"></i>
 			<a href="<?=Yii::$app->urlManager->createUrl('/college')?>">大学管理</a>
 		</li>
+		<li><?=$collegeDormArea['name']?></li>
 		<li class="active">管理员列表</li>
 	</ul>
 </div>
@@ -21,9 +22,13 @@ use yii\widgets\LinkPager;
 			大学管理
 			<small>
 				<i class="icon-double-angle-right"></i>
+				<?=$collegeDormArea['name']?>
+			</small>
+			<small>
+				<i class="icon-double-angle-right"></i>
 				管理员列表
 			</small>
-			<a href="<?=Yii::$app->urlManager->createUrl(['/college-admin/add', 'college_id' => $college_id])?>" class="btn btn-xs btn-pink" style="float: right;">添加</a>
+			<a href="<?=Yii::$app->urlManager->createUrl(['/college-admin/add', 'college_dorm_area_id' => $college_dorm_area_id])?>" class="btn btn-xs btn-pink" style="float: right;">添加</a>
 		</h1>
 	</div><!-- /.page-header -->
 
@@ -35,6 +40,7 @@ use yii\widgets\LinkPager;
 						<th>Id</th>
 						<th>用户名</th>
 						<th>电话号码</th>
+						<th>是否是超级管理员</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -44,6 +50,7 @@ use yii\widgets\LinkPager;
 							<td><?=$collegeAdmin['id']?></td>
 							<td><?=$collegeAdmin['username']?></td>
 							<td><?=$collegeAdmin['phone']?></td>
+							<td><?=$collegeAdmin['is_super'] == 0 ? '<font color="red">否</font>' : '<font color="green">是</font>'?></td>
 							<td>
 								<button class="btn btn-xs btn-danger" onclick="deleteCollegeAdmin(<?=$collegeAdmin['id']?>)">删除</button>&nbsp;&nbsp;
 								<button class="btn btn-xs btn-info" onclick="resetPassword(<?=$collegeAdmin['id']?>)">重置密码</button>&nbsp;&nbsp;

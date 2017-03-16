@@ -60,11 +60,8 @@ function initCollegeProduct(collegeId) {
 							<td><?=$college['name']?></td>
 							<td><?=$college['province_name']?>、<?=$college['city_name']?>、<?=$college['region_name']?>、<?=$college['detail_address']?></td>
 							<td>
-								<a href="<?=Yii::$app->urlManager->createUrl(['/college/update', 'id' => $college['id']])?>" class="btn btn-xs btn-info">修改</a>
-								<a href="<?=Yii::$app->urlManager->createUrl(['/college-admin/index', 'college_id' => $college['id']])?>" class="btn btn-xs btn-success">管理员列表</a>
-								<?php if ($college['has_init_product'] == 0):?>
-									<button class="btn btn-xs btn-warning" onclick="initCollegeProduct(<?=$college['id']?>)">初始化商品</button>
-								<?php endif;?>
+								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/college/update', 'id' => $college['id']])?>" class="btn btn-xs btn-info">修改</a>
+								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/college-dorm-area', 'college_id' => $college['id']])?>" class="btn btn-xs btn-warning">寝室区域管理</a>
 							</td>
 						</tr>
 					<?php endforeach;?>

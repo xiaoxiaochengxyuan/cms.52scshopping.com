@@ -8,7 +8,7 @@ use yii\data\Pagination;
  * 所有Dao的基类
  * @author xiawei
  */
-abstract class BaseDao {
+abstract class Dao {
 	/**
 	 * 对应的列
 	 * @var []
@@ -24,7 +24,7 @@ abstract class BaseDao {
 	/**
 	 * 单例
 	 * @param string $className
-	 * @return BaseDao
+	 * @return Dao
 	 */
 	public static function instance($className) {
 		if (isset(self::$INSTANCES[$className])) {
@@ -397,5 +397,18 @@ abstract class BaseDao {
 			->from($this->tableName())
 			->where("{$columnName}=:{$columnName}", [":{$columnName}" => $columnValue])
 			->sum($sumColumn, self::db());
+	}
+	
+	
+	/**
+	 * 通过条件判断是否有某条数据
+	 * @param array $condition 条件
+	 * @return boolean 有返回true,没有返回false
+	 */
+	public function existsByCondition($condition) {
+		return $this->createQuery()
+			->from($this->tableName())
+			->where($condition)
+			->exists(self::db());
 	}
 }

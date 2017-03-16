@@ -1,12 +1,12 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
 use yii\data\Pagination;
+use app\base\Dao;
 /**
  * 消息对应的Dao
  * @author xiawei
  */
-class Message extends BaseDao {
+class Message extends Dao {
 	/**
 	 * 表名
 	 * @var string
@@ -15,7 +15,7 @@ class Message extends BaseDao {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TABLE_NAME;

@@ -1,6 +1,5 @@
 <?php
 namespace app\controllers;
-use app\base\BaseWebController;
 use app\forms\CollegeForm;
 use app\daos\Region;
 use app\daos\College;
@@ -9,11 +8,12 @@ use app\daos\Product;
 use app\base\BaseDao;
 use app\daos\CollegeProduct;
 use yii\web\Response;
+use app\base\Controller;
 /**
  * 大学相关的Controller
  * @author xiawei
  */
-class CollegeController extends BaseWebController {
+class CollegeController extends Controller {
 	/**
 	 * 大学列表页Controller
 	 */

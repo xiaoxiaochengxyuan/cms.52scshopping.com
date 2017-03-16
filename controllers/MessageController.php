@@ -1,14 +1,14 @@
 <?php
 namespace app\controllers;
-use app\base\BaseWebController;
 use app\forms\MessageForm;
 use app\daos\Message;
 use yii\data\Pagination;
+use app\base\Controller;
 /**
  * 消息Controller
  * @author xiawei
  */
-class MessageController extends BaseWebController {
+class MessageController extends Controller {
 	/**
 	 * 消息列表页
 	 */

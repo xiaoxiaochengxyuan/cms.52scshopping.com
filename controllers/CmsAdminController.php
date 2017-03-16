@@ -1,13 +1,13 @@
 <?php
 namespace app\controllers;
-use app\base\BaseWebController;
 use app\forms\CmsAdminForm;
 use app\daos\CmsAdmin;
+use app\base\Controller;
 /**
  * Cms管理员对象
  * @author xiawei
  */
-class CmsAdminController extends BaseWebController {
+class CmsAdminController extends Controller {
 	/**
 	 * 修改当前登录用户密码Action
 	 */

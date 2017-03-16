@@ -4,6 +4,7 @@ use yii\base\Model;
 use app\daos\CollegeAdmin;
 use app\daos\College;
 use app\utils\StringUtil;
+use app\daos\CollegeDormArea;
 /**
  * 大学对应的Form表单
  * @author xiawei
@@ -30,7 +31,14 @@ class CollegeAdminForm extends Model {
 	 * 对应的大学id
 	 * @var integer
 	 */
-	public $college_id = 0;
+	public $college_dorm_area_id = 0;
+	
+	/**
+	 * 是否是超级管理员,0为不是,1为是
+	 * @var integer
+	 */
+	public $is_super = 0;
+	
 	
 	/**
 	 * {@inheritDoc}
@@ -39,8 +47,9 @@ class CollegeAdminForm extends Model {
 	public function rules() {
 		return [
 			['usenrame', 'checkUsername', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
-			['college_id', 'checkCollegeId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
-			['phone', 'checkPhone', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
+			['college_dorm_area_id', 'checkCollegeDormAreaId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['phone', 'checkPhone', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['is_super', 'checkIsSuper', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
 		];
 	}
 	
@@ -58,11 +67,11 @@ class CollegeAdminForm extends Model {
 	}
 	
 	
-	public function checkCollegeId() {
-		if (empty($this->college_id)) {
-			$this->addError('college_id', '大学Id必须提交');
-		} elseif (!College::instance()->existsByColumn('id', $this->college_id)) {
-			$this->addError('college_id', '对应的大学不存在');
+	public function checkCollegeDormAreaId() {
+		if (empty($this->college_dorm_area_id)) {
+			$this->addError('college_dorm_area_id', '大学区域Id必须提交');
+		} elseif (!CollegeDormArea::instance()->existsByColumn('id', $this->college_dorm_area_id)) {
+			$this->addError('college_dorm_area_id', '大学区域Id不存在');
 		}
 	}
 	
@@ -75,6 +84,21 @@ class CollegeAdminForm extends Model {
 			$this->addError('phone', '手机号码必须填写');
 		} elseif (!StringUtil::isMobile($this->phone)) {
 			$this->addError('phone', '手机号码格式不正确');
+		}
+	}
+	
+	/**
+	 * 检查是否是超级管理员字段
+	 */
+	public function checkIsSuper() {
+		if ($this->is_super == 1) {
+			$condition = ['and', 'is_super=1', "college_dorm_area_id={$this->college_dorm_area_id}"];
+			if ($this->getScenario() == 'add') {
+				$condition[] = "id<>{$this->id}";
+			}
+			if (CollegeAdmin::instance()->existsByCondition($condition)) {
+				$this->addError('is_super', '已经存在超级管理员,不能重复添加超级管理员');
+			}
 		}
 	}
 }

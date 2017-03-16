@@ -95,12 +95,10 @@ function deleteProduct(id, productName) {
 						<th>进价</th>
 						<th>卖价</th>
 						<th>是否上架</th>
-						<th>库存</th>
 						<th>初始显示购买人数</th>
 						<th>标题图片</th>
 						<th>对应顶级分类</th>
 						<th>对应分类</th>
-						<th>进货提醒数量</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -112,12 +110,10 @@ function deleteProduct(id, productName) {
 							<td><?=$product['stock_price']?>元</td>
 							<td><?=$product['price']?>元</td>
 							<td><?=$product['grounding'] == 1 ? '是' : '否'?></td>
-							<td><?=$product['number']?>件</td>
 							<td><?=$product['show_buy_number']?></td>
 							<td><?=Html::img(OssUtil::getOssImg($product['title_img']), ['style' => 'width:150px;'])?></td>
 							<td><?=$product['tpc_name']?></td>
 							<td><?=$product['pc_name']?></td>
-							<td><?=$product['warn_number']?></td>
 							<td>
 								<button class="btn <?=$product['grounding'] == 1 ? 'btn-warning' : 'btn-success'?> btn-xs" onclick="changeGrounding(<?=$product['id']?>, '<?=$product['grounding'] == 1 ? '下架' : '上架'?>')">
 									<?=$product['grounding'] == 1 ? '下架' : '上架'?>
@@ -125,9 +121,7 @@ function deleteProduct(id, productName) {
 								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product/update', 'id' => $product['id']])?>" class="btn btn-xs btn-info">修改</a>
 								<button class="btn btn-xs btn-danger" onclick="deleteProduct(<?=$product['id']?>, '<?=$product['name']?>')">删除</button>
 								<a target="_blank" href="http://<?=Yii::$app->params['mobile_domin']?>/product/<?=$product['id']?>/preview.html" class="btn btn-xs btn-warning">浏览</a>
-								<?php if (!empty($product['options'])):?>
-									<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product/stock', 'id' => $product['id']])?>" class="btn btn-xs btn-purple">库存管理</a>
-								<?php endif;?>
+								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product-stock', 'product_id' => $product['id']])?>" class="btn btn-xs btn-purple">库存管理</a>
 							</td>
 						</tr>
 					<?php endforeach;?>

@@ -1,19 +1,20 @@
 <?php
 namespace app\daos;
-use app\base\BaseDao;
+use app\base\Dao;
 /**
  * 对应的区域Dao
  * @author xiawei
  */
-class Region extends BaseDao {
+class Region extends Dao {
 	/**
 	 * 表名
 	 * @var string
 	 */
 	const TALBE_NAME = 'region';
+	
 	/**
 	 * {@inheritDoc}
-	 * @see \app\base\BaseDao::tableName()
+	 * @see \app\base\Dao::tableName()
 	 */
 	protected function tableName() {
 		return self::TALBE_NAME;

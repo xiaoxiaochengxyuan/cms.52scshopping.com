@@ -26,12 +26,6 @@ class ProductForm extends Model {
 	 */
 	public $price = 0;
 	
-	/**
-	 * 商品库存
-	 * @var integer
-	 */
-	public $number = 0;
-	
 	
 	/**
 	 * 页面上初始显示的商品购买数量
@@ -86,11 +80,6 @@ class ProductForm extends Model {
 	 */
 	public $need_send = 0;
 	
-	/**
-	 * 警告数量,当库存小于这个值的时候提醒发货
-	 * @var integer
-	 */
-	public $warn_number = 0;
 	
 	/**
 	 * 进货价格
@@ -99,18 +88,18 @@ class ProductForm extends Model {
 	public $stock_price = 0;
 	
 	
-	/**
-	 * 商品选项
-	 * @var string
-	 */
-	public $options = null;
-	
 	
 	/**
 	 * 是否上线,0为否,1为是
 	 * @var integer
 	 */
 	public $grounding = 0;
+	
+	/**
+	 * 进货URL
+	 * @var string
+	 */
+	public $purchase_url = null;
 	
 	/**
 	 * {@inheritDoc}
@@ -121,7 +110,6 @@ class ProductForm extends Model {
 			['name', 'required', 'on' => ['add', 'update'], 'message' => '商品名称必须填写'],
 			['stock_price', 'checkStockPrice', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['price', 'checkPrice', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
-			['number', 'checkNumber', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['show_buy_number', 'checkShowBuyNumber', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['parameters', 'checkParamters', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['desc', 'required', 'on' => ['add', 'update'], 'message' => '商品详情不能为空'],
@@ -130,8 +118,7 @@ class ProductForm extends Model {
 			['top_cat_id', 'checkTopCatId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['cat_id', 'checkCatId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['need_send', 'checkNeedSend', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
-			['warn_number', 'checkWarnNumber', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
-			['options', 'checkOptions', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
+			['purchase_url', 'url', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
 		];
 	}
 	
@@ -239,31 +226,6 @@ class ProductForm extends Model {
 	public function checkNeedSend() {
 		if (!in_array($this->need_send, [0, 1])) {
 			$this->addError('need_send', '是否时缺货必发不正确');
-		}
-	}
-	
-	
-	/**
-	 * 检查警告数量
-	 */
-	public function checkWarnNumber() {
-		if (!CommonUtil::isPlusNumber($this->warn_number)) {
-			$this->addError('warn_number', '警告数量必须是一个正整数');
-		} elseif ($this->warn_number >= $this->number) {
-			$this->addError('warn_number', '警告数量不能超过库存');
-		}
-	}
-	
-	
-	/**
-	 * 检查商品选项
-	 */
-	public function checkOptions() {
-		foreach ($this->options as $option) {
-			if (!isset($option['name']) || !isset($option['value'])) {
-				$this->addError('name', '商品选项格式错误');
-				break;
-			}
 		}
 	}
 }
