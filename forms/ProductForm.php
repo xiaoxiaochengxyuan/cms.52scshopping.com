@@ -102,6 +102,18 @@ class ProductForm extends Model {
 	public $purchase_url = null;
 	
 	/**
+	 * 初始化默认库存
+	 * @var int
+	 */
+	public $num = 0;
+	
+	/**
+	 * 是否默认设置为精品推荐
+	 * @var integer
+	 */
+	public $is_jinpin = 0;
+	
+	/**
 	 * {@inheritDoc}
 	 * @see \yii\base\Model::rules()
 	 */
@@ -118,7 +130,8 @@ class ProductForm extends Model {
 			['top_cat_id', 'checkTopCatId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['cat_id', 'checkCatId', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
 			['need_send', 'checkNeedSend', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
-			['purchase_url', 'url', 'on' => ['add', 'update'], 'skipOnEmpty' => false]
+			['purchase_url', 'url', 'on' => ['add', 'update'], 'skipOnEmpty' => false],
+			['num', 'checkNum', 'on' => ['add', 'update']]
 		];
 	}
 	
@@ -226,6 +239,16 @@ class ProductForm extends Model {
 	public function checkNeedSend() {
 		if (!in_array($this->need_send, [0, 1])) {
 			$this->addError('need_send', '是否时缺货必发不正确');
+		}
+	}
+	
+	
+	/**
+	 * 检查默认库存
+	 */
+	public function checkNum() {
+		if (!CommonUtil::isPlusInt($this->num)) {
+			$this->addError('num', '商品默认库存必须是一个正整数');
 		}
 	}
 }

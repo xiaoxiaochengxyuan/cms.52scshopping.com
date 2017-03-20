@@ -205,6 +205,19 @@ function chgNeedSend(obj) {
 				
 				
 				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 默认库存： </label>
+					<div class="col-sm-6">
+						<?=Html::textInput('ProductForm[num]', $productForm->num, ['class' => 'form-control'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('num')):?>
+							<span class="block error"><?=Html::error($productForm, 'num')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 进货URL： </label>
 					<div class="col-sm-6">
 						<?=Html::textInput('ProductForm[purchase_url]', $productForm->purchase_url, ['class' => 'form-control'])?>
@@ -217,6 +230,21 @@ function chgNeedSend(obj) {
 				</div>
 				
 				
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否精品推荐： </label>
+					<div class="col-sm-6">
+						<?=Html::dropDownList('ProductForm[is_jinpin]', $productForm->is_jinpin, ['否', '是'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('is_jinpin')):?>
+							<span class="block error"><?=Html::error($productForm, 'is_jinpin')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				
+				
 				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品参数（一行一个，键和值用英文冒号隔开）： </label>
 					<div class="col-sm-6">
@@ -225,19 +253,6 @@ function chgNeedSend(obj) {
 					<div class="col-sm-3">
 						<?php if ($productForm->hasErrors('parameters')):?>
 							<span class="block error"><?=Html::error($productForm, 'parameters')?></span>
-						<?php endif;?>
-					</div>
-				</div>
-				
-				
-				<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 商品选项（一行一个，键和值用英文冒号隔开）： </label>
-					<div class="col-sm-6">
-						<?=Html::textarea('ProductForm[options]', $productForm->options, ['class' => 'form-control', 'style' => 'resize:none;height:220px;'])?>
-					</div>
-					<div class="col-sm-3">
-						<?php if ($productForm->hasErrors('parameters')):?>
-							<span class="block error"><?=Html::error($productForm, 'options')?></span>
 						<?php endif;?>
 					</div>
 				</div>

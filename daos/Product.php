@@ -89,8 +89,22 @@ class Product extends Dao {
 		if ($search['cat_id'] != 0) {
 			$condition[] = "p.cat_id={$search['cat_id']}";
 		}
+		$select = [
+			'p.id',
+			'p.name',
+			'p.stock_price',
+			'p.price',
+			'p.title_img',
+			'p.show_buy_number',
+			'p.grounding',
+			'tpc.name as tpc_name',
+			'pc.name as pc_name',
+			'p.is_options_num',
+			'p.num',
+			'p.is_jinpin'
+		];
 		return $this->createQuery()
-			->select(['p.id', 'p.name', 'p.stock_price', 'p.price', 'p.title_img', 'p.show_buy_number', 'p.grounding', 'tpc.name as tpc_name', 'pc.name as pc_name'])
+			->select($select)
 			->from($this->tableName().' p')
 			->leftJoin(ProductCat::TABLE_NAME.' tpc', 'tpc.id=p.top_cat_id')
 			->leftJoin(ProductCat::TABLE_NAME.' pc', 'pc.id=p.cat_id')

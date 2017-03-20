@@ -37,7 +37,7 @@ use yii\base\Widget;
 		<div class="col-xs-12">
 			<?php $form = ActiveForm::begin(['options' => ['class' => 'form-horizontal']])?>
 				<?=AlertMsgWidget::widget(['view' => $this])?>
-				<?=Html::hiddenInput('ProductStockForm[product_id]', $productStockForm->product_id)?>
+				<?=Html::hiddenInput('ProductStockForm[id]', $productStockForm->id)?>
 				<?php if ($productStockForm->hasErrors('product_id')):?>
 					<?=AlertMsgWidget::widget(['error' => Html::error($productStockForm, 'product_id'), 'type' => 'error'])?>
 				<?php endif;?>
@@ -66,7 +66,7 @@ use yii\base\Widget;
 				</div>
 				
 				<div class="form-group">
-					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 警告数量： </label>
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 库存名称： </label>
 					<div class="col-sm-6">
 						<?=Html::textInput('ProductStockForm[warning_num]', $productStockForm->warning_num, ['class' => 'form-control'])?>
 					</div>

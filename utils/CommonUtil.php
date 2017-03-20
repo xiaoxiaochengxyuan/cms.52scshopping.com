@@ -20,7 +20,7 @@ class CommonUtil {
 	
 	/**
 	 * 检查一个数是不是正数
-	 * @param $number
+	 * @param unknow $number
 	 * @return bool
 	 */
 	public static function isPlusNumber($number) {
@@ -28,5 +28,25 @@ class CommonUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 判断一个数是不是正整数
+	 * @param unknow $int
+	 * @return boolean
+	 */
+	public static function isPlusInt($int) {
+		return intval($int) == $int && self::isPlusNumber($int);
+	}
+	
+	
+	/**
+	 * 格式化输出数据
+	 * @param unknown $var 要输出 的变量 
+	 */
+	public static function formatPrint($var) {
+		echo '<pre>';
+		print_r($var);
+		die('</pre>');
 	}
 }

@@ -99,6 +99,9 @@ function deleteProduct(id, productName) {
 						<th>标题图片</th>
 						<th>对应顶级分类</th>
 						<th>对应分类</th>
+						<th>是否有选项库存</th>
+						<th>默认初始化库存</th>
+						<th>是否默认精品</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -114,6 +117,9 @@ function deleteProduct(id, productName) {
 							<td><?=Html::img(OssUtil::getOssImg($product['title_img']), ['style' => 'width:150px;'])?></td>
 							<td><?=$product['tpc_name']?></td>
 							<td><?=$product['pc_name']?></td>
+							<td><?=$product['is_options_num'] == 1 ? '<font color="green">是</font>' : '<font color="red">否</font>'?></td>
+							<td><?=$product['num']?></td>
+							<td><?=$product['is_jinpin'] == 1 ? '<font color="green">是</font>' : '<font color="red">否</font>'?></td>
 							<td>
 								<button class="btn <?=$product['grounding'] == 1 ? 'btn-warning' : 'btn-success'?> btn-xs" onclick="changeGrounding(<?=$product['id']?>, '<?=$product['grounding'] == 1 ? '下架' : '上架'?>')">
 									<?=$product['grounding'] == 1 ? '下架' : '上架'?>
@@ -121,7 +127,7 @@ function deleteProduct(id, productName) {
 								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product/update', 'id' => $product['id']])?>" class="btn btn-xs btn-info">修改</a>
 								<button class="btn btn-xs btn-danger" onclick="deleteProduct(<?=$product['id']?>, '<?=$product['name']?>')">删除</button>
 								<a target="_blank" href="http://<?=Yii::$app->params['mobile_domin']?>/product/<?=$product['id']?>/preview.html" class="btn btn-xs btn-warning">浏览</a>
-								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product-stock', 'product_id' => $product['id']])?>" class="btn btn-xs btn-purple">库存管理</a>
+								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/product-stock', 'product_id' => $product['id']])?>" class="btn btn-xs btn-purple">选项库存管理</a>
 							</td>
 						</tr>
 					<?php endforeach;?>

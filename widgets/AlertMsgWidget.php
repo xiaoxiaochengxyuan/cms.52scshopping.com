@@ -14,10 +14,27 @@ class AlertMsgWidget extends Widget {
 	public $view = null;
 	
 	/**
+	 * 视图类型
+	 * @var string
+	 */
+	public $type = 'alert-msg';
+	
+	/**
+	 * 错误信息
+	 * @var string
+	 */
+	public $error = null;
+	/**
 	 * {@inheritDoc}
 	 * @see \yii\base\Widget::run()
 	 */
 	public function run() {
-		return $this->render('alert-msg', ['view' => $this->view]);
+		switch ($this->type) {
+			case 'alert-msg':
+				return $this->render('alert-msg/alert-msg', ['view' => $this->view]);
+				break;
+			case 'error':
+				return $this->render('alert-msg/alert-error', ['error' => $this->error]);
+		}
 	}
 }

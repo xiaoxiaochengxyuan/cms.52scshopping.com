@@ -94,44 +94,4 @@ class CollegeController extends Controller {
 			'regions' => $regions,
 		]);
 	}
-	
-	
-	public function actionInitProduct() {
-		$result = ['code' => ERROR_CODE_NONE, 'msg' => '操作成功'];
-		$collegeId = \Yii::$app->getRequest()->get('collegeId');
-		//首先查看对应的大学是否已经被初始化过
-		$hasInit = College::instance()->scalarByPrimaryKey($collegeId, 'has_init_product');
-		//当还没有初始化过商品,那么进行初始化
-		if ($hasInit == 0 && $hasInit !== false) {
-			//获取数据库中所有商品
-			$products = Product::instance()->listAll(['id', 'number', 'show_buy_number']);
-			$transaction = BaseDao::db()->beginTransaction();
-			$flag = true;
-			//循环添加大学商品
-			foreach ($products as $product) {
-				$collegeProduct = [
-					'product_id' => $product['id'],
-					'college_id' => $collegeId,
-					'number' => $product['number'],
-					'show_buy_number' => $product['show_buy_number'],
-				];
-				$flag = $flag && CollegeProduct::instance()->insert($collegeProduct);
-				if (!$flag) {
-					break;
-				}
-			}
-			if ($flag) {
-				//设置大学已经初始化过商品了
-				$flag = $flag && College::instance()->update($collegeId, ['has_init_product' => 1]);
-			}
-			if ($flag) {
-				$transaction->commit();
-			} else {
-				$transaction->rollBack();
-				$result = ['code' => ERROR_CODE_OPTION_FAILED, 'msg' => '操作失败'];
-			}
-		}
-		\Yii::$app->getResponse()->format = Response::FORMAT_JSON;
-		return $result;
-	}
 }

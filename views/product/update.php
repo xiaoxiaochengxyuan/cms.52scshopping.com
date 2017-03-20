@@ -204,6 +204,19 @@ function chgNeedSend(obj) {
 				
 				
 				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 默认库存： </label>
+					<div class="col-sm-6">
+						<?=Html::textInput('ProductForm[num]', $productForm->num, ['class' => 'form-control'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('num')):?>
+							<span class="block error"><?=Html::error($productForm, 'num')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 进货URL： </label>
 					<div class="col-sm-6">
 						<?=Html::textInput('ProductForm[purchase_url]', $productForm->purchase_url, ['class' => 'form-control'])?>
@@ -211,6 +224,18 @@ function chgNeedSend(obj) {
 					<div class="col-sm-3">
 						<?php if ($productForm->hasErrors('show_buy_number')):?>
 							<span class="block error"><?=Html::error($productForm, 'purchase_url')?></span>
+						<?php endif;?>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否精品推荐： </label>
+					<div class="col-sm-6">
+						<?=Html::dropDownList('ProductForm[is_jinpin]', $productForm->is_jinpin, ['否', '是'])?>
+					</div>
+					<div class="col-sm-3">
+						<?php if ($productForm->hasErrors('is_jinpin')):?>
+							<span class="block error"><?=Html::error($productForm, 'is_jinpin')?></span>
 						<?php endif;?>
 					</div>
 				</div>

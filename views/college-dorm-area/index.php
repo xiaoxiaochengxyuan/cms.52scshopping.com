@@ -1,3 +1,19 @@
+<script type="text/javascript">
+//初始化大学区域商品
+function initProduct(collegeDormAreaId) {
+	if(confirm("您真的要初始化该大学区域商品吗？")) {
+		$.get("<?=Yii::$app->getUrlManager()->createUrl(['/college-dorm-area/init-product'])?>", {
+			"collegeDormAreaId" : collegeDormAreaId
+		}, function(response) {
+			if(response.code == <?=ERROR_CODE_NONE?>) {
+				window.location.reload();
+			} else {
+				alert(response.msg);
+			}
+		});
+	}
+}
+</script>
 <div class="breadcrumbs" id="breadcrumbs">
 	<script type="text/javascript">
 		try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
@@ -51,6 +67,7 @@
 							<td><?=date('Y-m-d H:i:s', $collegeDormArea['update_time'])?></td>
 							<td>
 								<a href="<?=Yii::$app->getUrlManager()->createUrl(['/college-admin', 'college_dorm_area_id' => $collegeDormArea['id']])?>" class="btn btn-xs btn-info">设置大学管理员</a>
+								<button class="btn btn-xs btn-success" onclick="initProduct(<?=$collegeDormArea['id']?>)">初始化区域商品</button>
 							</td>
 						</tr>
 					<?php endforeach;?>
